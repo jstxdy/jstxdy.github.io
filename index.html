@@ -128,18 +128,40 @@
 <details>
 <summary>简化各种技术集成</summary>提供对 Java Mail、任务调度、JMX、JMS、JNDI、EJB、动态语言、远程访问、Web Service 等的集成。
 </details></p>
-      <div class="post-button"><a class="btn" href="/2020/07/10/Spring%E5%AD%A6%E4%B9%A0/" rel="noopener"><i class="fa fa-angle-double-right fa-fw"></i>阅读更多</a></div>
+      <div class="post-button"><a class="btn" href="/2020/07/10/Spring%E5%AD%A6%E4%B9%A0/" rel="noopener"><i class="fa fa-angle-double-right fa-fw"></i>Read More</a></div>
     </div>
   </div>
   <div class="lx-entry padding">
     <div>
-      <h2 class="title"><a href="/2020/07/09/JAVA%E5%9F%BA%E7%A1%80%E6%8A%80%E6%9C%AF/">JAVA后端学习规划</a></h2>
+      <h2 class="title"><a href="/2020/07/09/JAVA%E5%9F%BA%E7%A1%80%E6%8A%80%E6%9C%AF/">JAVA核心技术</a></h2>
       <span class="lx-post-detail"><i class="fa fa-calendar-o"></i> 2020-07-09</span>
-      <p><h1 id="JAVA语言学习"><a href="#JAVA语言学习" class="headerlink" title="JAVA语言学习"></a>JAVA语言学习</h1><h2 id="Java-基础"><a href="#Java-基础" class="headerlink" title="Java 基础"></a>Java 基础</h2><p>《Java 核心技术 卷1》<br>毕向东老师的  Java 基础教程</p>
-<h2 id="Spring"><a href="#Spring" class="headerlink" title="Spring"></a>Spring</h2><p>Maven学习：Spring相关jar包的管理<br>Junit学习：测试程序的编写及管理<br>Spring学习：《Spring实战》</p>
-<h2 id="框架学习"><a href="#框架学习" class="headerlink" title="框架学习"></a>框架学习</h2><p> Spring、SpringMVC、Mybatis<br> SpringBoot 和 SpringCloud。</p>
-</p>
-      <div class="post-button"><a class="btn" href="/2020/07/09/JAVA%E5%9F%BA%E7%A1%80%E6%8A%80%E6%9C%AF/" rel="noopener"><i class="fa fa-angle-double-right fa-fw"></i>阅读更多</a></div>
+      <p><h2 id="多线程"><a href="#多线程" class="headerlink" title="多线程"></a>多线程</h2><h3 id="线程概念"><a href="#线程概念" class="headerlink" title="线程概念"></a>线程概念</h3><details><summary><font color='navyblue'>进程</font></summary>启动一个X.exe程序叫做一个进程，再启动一个Y.exe，那么就是两个进程。</details>
+<details><summary><font color='navyblue'>线程</font></summary>线程是在进程内部同时进行的事，如在游戏中，A对B造成伤害，同时C在对D造成伤害</details>
+    hero.java  
+    package charcter;
+    import java.io.Serializable;
+    public class Hero{
+        public String name;
+        public float hp;
+        public int damage;
+        public void attackHero(Hero h){
+            try{
+                Thread.sleep(1000);
+                //每次攻击暂停1000ms后再开始下一次攻击
+            }
+            catch(InterrruptedException){
+                e.printStackTrace();
+            }
+            h.hp-=damage;
+            System.out.format("%s正在攻击%s，%s的血变成了%.0f",name,h.name,h.name,h=hp);
+            if(h.isDead())
+                System.out.println(h.name+"死了");
+        }
+        public boolen isDead(){
+            return 0>=hp?ture:false;
+        }
+    }</p>
+      <div class="post-button"><a class="btn" href="/2020/07/09/JAVA%E5%9F%BA%E7%A1%80%E6%8A%80%E6%9C%AF/" rel="noopener"><i class="fa fa-angle-double-right fa-fw"></i>Read More</a></div>
     </div>
   </div>
   <div class="lx-entry padding">
@@ -150,7 +172,7 @@
 <h2 id="Spring"><a href="#Spring" class="headerlink" title="Spring"></a>Spring</h2><p>Maven学习：Spring相关jar包的管理<br>Junit学习：测试程序的编写及管理<br>Spring学习：《Spring实战》</p>
 <h2 id="框架学习"><a href="#框架学习" class="headerlink" title="框架学习"></a>框架学习</h2><p> Spring、SpringMVC、Mybatis<br> SpringBoot 和 SpringCloud。</p>
 </p>
-      <div class="post-button"><a class="btn" href="/2020/07/08/JAVA%E5%90%8E%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%A7%84%E5%88%92/" rel="noopener"><i class="fa fa-angle-double-right fa-fw"></i>阅读更多</a></div>
+      <div class="post-button"><a class="btn" href="/2020/07/08/JAVA%E5%90%8E%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%A7%84%E5%88%92/" rel="noopener"><i class="fa fa-angle-double-right fa-fw"></i>Read More</a></div>
     </div>
   </div>
   <div class="lx-entry padding">
@@ -159,7 +181,7 @@
       <span class="lx-post-detail"><i class="fa fa-calendar-o"></i> 2020-07-07</span>
       <p><p>o(￣▽￣)ｄ</p>
 </p>
-      <div class="post-button"><a class="btn" href="/2020/07/07/%E6%B5%8B%E8%AF%95/" rel="noopener"><i class="fa fa-angle-double-right fa-fw"></i>阅读更多</a></div>
+      <div class="post-button"><a class="btn" href="/2020/07/07/%E6%B5%8B%E8%AF%95/" rel="noopener"><i class="fa fa-angle-double-right fa-fw"></i>Read More</a></div>
     </div>
   </div>
   <div class="lx-entry padding">
@@ -180,7 +202,7 @@
 
 <p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
 </p>
-      <div class="post-button"><a class="btn" href="/2020/07/07/hello-world/" rel="noopener"><i class="fa fa-angle-double-right fa-fw"></i>阅读更多</a></div>
+      <div class="post-button"><a class="btn" href="/2020/07/07/hello-world/" rel="noopener"><i class="fa fa-angle-double-right fa-fw"></i>Read More</a></div>
     </div>
   </div>
 
@@ -220,18 +242,18 @@
   </div>
   <nav class="menu-container">
   <ul class="menu-items">
-    <li><a href="/"><i class="fa fa-home fa-fw"></i>首页</a></li>
-    <li><a href="/archives/"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+    <li><a href="/"><i class="fa fa-home fa-fw"></i>Home</a></li>
+    <li><a href="/archives/"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
     
     <li class="has-sub"><span class="dropdown-heading">
-      <i class="fa fa-bookmark fa-fw"></i>页面</span>
+      <i class="fa fa-bookmark fa-fw"></i>Pages</span>
         <ul>
           <li><a href="/guestbook/">Guestbook</a></li>
         <li><a href="/about/">About</a></li>
         </ul>
     </li>
     <li class="has-sub"><span class="dropdown-heading">
-      <i class="fa fa-link fa-fw"></i>友链</span>
+      <i class="fa fa-link fa-fw"></i>Friends</span>
         <ul>
           <li> <a href="https://lx.js.org" target="_blank">Theme-Lx</a></li>
         </ul>

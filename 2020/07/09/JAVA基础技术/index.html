@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="theme-color" content=#58b77a>
-  <title>JAVA后端学习规划 | North-Box</title>
+  <title>JAVA核心技术 | North-Box</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="author" content="NorthBox">
   <meta name="keywords" content="">
@@ -70,7 +70,7 @@
   <div class="page-title">
     <div class="avatar"><a href="/"><img src="/images/avatar.jpeg"></a></div>
     <span>2020-07-09</span>
-    <h2>JAVA后端学习规划</h2>
+    <h2>JAVA核心技术</h2>
     
     </div>
 </div>
@@ -80,10 +80,32 @@
   <div class="lx-post">
     <div class="lx-entry padding">
       <div>
-        <h1 id="JAVA语言学习"><a href="#JAVA语言学习" class="headerlink" title="JAVA语言学习"></a>JAVA语言学习</h1><h2 id="Java-基础"><a href="#Java-基础" class="headerlink" title="Java 基础"></a>Java 基础</h2><p>《Java 核心技术 卷1》<br>毕向东老师的  Java 基础教程</p>
-<h2 id="Spring"><a href="#Spring" class="headerlink" title="Spring"></a>Spring</h2><p>Maven学习：Spring相关jar包的管理<br>Junit学习：测试程序的编写及管理<br>Spring学习：《Spring实战》</p>
-<h2 id="框架学习"><a href="#框架学习" class="headerlink" title="框架学习"></a>框架学习</h2><p> Spring、SpringMVC、Mybatis<br> SpringBoot 和 SpringCloud。</p>
-
+        <h2 id="多线程"><a href="#多线程" class="headerlink" title="多线程"></a>多线程</h2><h3 id="线程概念"><a href="#线程概念" class="headerlink" title="线程概念"></a>线程概念</h3><details><summary><font color='navyblue'>进程</font></summary>启动一个X.exe程序叫做一个进程，再启动一个Y.exe，那么就是两个进程。</details>
+<details><summary><font color='navyblue'>线程</font></summary>线程是在进程内部同时进行的事，如在游戏中，A对B造成伤害，同时C在对D造成伤害</details>
+    hero.java  
+    package charcter;
+    import java.io.Serializable;
+    public class Hero{
+        public String name;
+        public float hp;
+        public int damage;
+        public void attackHero(Hero h){
+            try{
+                Thread.sleep(1000);
+                //每次攻击暂停1000ms后再开始下一次攻击
+            }
+            catch(InterrruptedException){
+                e.printStackTrace();
+            }
+            h.hp-=damage;
+            System.out.format("%s正在攻击%s，%s的血变成了%.0f",name,h.name,h.name,h=hp);
+            if(h.isDead())
+                System.out.println(h.name+"死了");
+        }
+        public boolen isDead(){
+            return 0>=hp?ture:false;
+        }
+    }
       </div>
     </div>
   </div>
@@ -150,18 +172,18 @@
   </div>
   <nav class="menu-container">
   <ul class="menu-items">
-    <li><a href="/"><i class="fa fa-home fa-fw"></i>首页</a></li>
-    <li><a href="/archives/"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+    <li><a href="/"><i class="fa fa-home fa-fw"></i>Home</a></li>
+    <li><a href="/archives/"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
     
     <li class="has-sub"><span class="dropdown-heading">
-      <i class="fa fa-bookmark fa-fw"></i>页面</span>
+      <i class="fa fa-bookmark fa-fw"></i>Pages</span>
         <ul>
           <li><a href="/guestbook/">Guestbook</a></li>
         <li><a href="/about/">About</a></li>
         </ul>
     </li>
     <li class="has-sub"><span class="dropdown-heading">
-      <i class="fa fa-link fa-fw"></i>友链</span>
+      <i class="fa fa-link fa-fw"></i>Friends</span>
         <ul>
           <li> <a href="https://lx.js.org" target="_blank">Theme-Lx</a></li>
         </ul>
