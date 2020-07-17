@@ -83,7 +83,7 @@
     <div>
       <h2 class="title"><a href="/2020/07/10/Spring%E5%AD%A6%E4%B9%A0/">JAVA后端学习规划</a></h2>
       <span class="lx-post-detail"><i class="fa fa-calendar-o"></i> 2020-07-10</span>
-      <p><h1 id="Spring"><a href="#Spring" class="headerlink" title="Spring"></a>Spring</h1><h2 id="学习关键："><a href="#学习关键：" class="headerlink" title="学习关键："></a>学习关键：</h2><p>Spring 核心是 <font coloe='blue'>IoC 容器</font>，所以一定要透彻理解什么是控制反转（IoC）容器，以及如何配置及使用容器，其他所有技术都是基于容器实现的。理解好 IoC 后，接下来是面向切面编程（AOP），首先还是明确概念，基本配置，最后是实现原理，接下来就是数据库事务管理。其实 Spring 管理事务是通过面向切面编程实现的，所以基础很重要，IoC 容器和 AOP 学好，其余都是基于这两个核心东西的实现，</p>
+      <p><h1 id="Spring"><a href="#Spring" class="headerlink" title="Spring"></a>Spring</h1><h2 id="学习关键："><a href="#学习关键：" class="headerlink" title="学习关键："></a>学习关键：</h2><p>Spring 核心是 <font color='navyblue'>IoC 容器</font>，所以一定要透彻理解什么是控制反转（IoC）容器，以及如何配置及使用容器，其他所有技术都是基于容器实现的。<br>理解好 IoC 后，接下来是面向<font color='navyblue'>切面编程（AOP）</font>，首先还是明确概念，基本配置，最后是实现原理，接下来就是数据库事务管理。<br>其实 Spring 管理事务是通过面向切面编程实现的，所以基础很重要，IoC 容器和 AOP 学好，其余都是基于这两个核心东西的实现，</p>
 <h2 id="关键概念："><a href="#关键概念：" class="headerlink" title="关键概念："></a>关键概念：</h2><details>
 <summary>应用程序</summary>能完成我们所需要功能的成品，比如购物网站、OA 系统。
 </details>
@@ -128,40 +128,421 @@
 <details>
 <summary>简化各种技术集成</summary>提供对 Java Mail、任务调度、JMX、JMS、JNDI、EJB、动态语言、远程访问、Web Service 等的集成。
 </details></p>
-      <div class="post-button"><a class="btn" href="/2020/07/10/Spring%E5%AD%A6%E4%B9%A0/" rel="noopener"><i class="fa fa-angle-double-right fa-fw"></i>Read More</a></div>
+      <div class="post-button"><a class="btn" href="/2020/07/10/Spring%E5%AD%A6%E4%B9%A0/" rel="noopener"><i class="fa fa-angle-double-right fa-fw"></i>阅读更多</a></div>
     </div>
   </div>
   <div class="lx-entry padding">
     <div>
       <h2 class="title"><a href="/2020/07/09/JAVA%E5%9F%BA%E7%A1%80%E6%8A%80%E6%9C%AF/">JAVA核心技术</a></h2>
       <span class="lx-post-detail"><i class="fa fa-calendar-o"></i> 2020-07-09</span>
-      <p><h2 id="多线程"><a href="#多线程" class="headerlink" title="多线程"></a>多线程</h2><h3 id="线程概念"><a href="#线程概念" class="headerlink" title="线程概念"></a>线程概念</h3><details><summary><font color='navyblue'>进程</font></summary>启动一个X.exe程序叫做一个进程，再启动一个Y.exe，那么就是两个进程。</details>
+      <p><!-- TOC -->autoauto- [多线程](#多线程)auto    - [线程概念](#线程概念)auto    - [多线程-继承线程类](#多线程-继承线程类)auto    - [多线程-实现Runnable接口](#多线程-实现runnable接口)auto    - [创建多线程-匿名类](#创建多线程-匿名类)auto- [常见的线程方法](#常见的线程方法)auto    - [Thread.sleep()](#threadsleep)auto- [join()](#join)auto    - [线程优先级](#线程优先级)auto    - [临时暂停](#临时暂停)auto    - [守护线程](#守护线程)auto- [同步](#同步)auto    - [synchronized 同步对象概念](#synchronized-同步对象概念)auto    - [线程安全的类](#线程安全的类)auto- [线程安全相关面试题](#线程安全相关面试题)auto    - [HashMap和Hashtable的区别](#hashmap和hashtable的区别)auto    - [StringBuffer和StringBuilder的区别](#stringbuffer和stringbuilder的区别)auto    - [把非线程安全的集合转换为线程安全](#把非线程安全的集合转换为线程安全)auto    - [JAVA 线程之间的交互 WAIT和NOTIFY](#java-线程之间的交互-wait和notify)auto    - [关于wait、notify和notifyAll](#关于waitnotify和notifyall)autoauto<!-- /TOC -->
+
+<h1 id="多线程"><a href="#多线程" class="headerlink" title="多线程"></a>多线程</h1><h2 id="线程概念"><a href="#线程概念" class="headerlink" title="线程概念"></a>线程概念</h2><details><summary><font color='navyblue'>进程</font></summary>启动一个X.exe程序叫做一个进程，再启动一个Y.exe，那么就是两个进程。</details>
 <details><summary><font color='navyblue'>线程</font></summary>线程是在进程内部同时进行的事，如在游戏中，A对B造成伤害，同时C在对D造成伤害</details>
-    hero.java  
-    package charcter;
-    import java.io.Serializable;
-    public class Hero{
-        public String name;
-        public float hp;
-        public int damage;
-        public void attackHero(Hero h){
-            try{
-                Thread.sleep(1000);
-                //每次攻击暂停1000ms后再开始下一次攻击
-            }
-            catch(InterrruptedException){
-                e.printStackTrace();
-            }
-            h.hp-=damage;
-            System.out.format("%s正在攻击%s，%s的血变成了%.0f",name,h.name,h.name,h=hp);
-            if(h.isDead())
-                System.out.println(h.name+"死了");
+
+<p>不使用多线程举例：</p>
+<blockquote>
+<p>盖伦 正在攻击 提莫, 提莫的血变成了 250<br>盖伦 正在攻击 提莫, 提莫的血变成了 200<br>盖伦 正在攻击 提莫, 提莫的血变成了 150<br>盖伦 正在攻击 提莫, 提莫的血变成了 100<br>盖伦 正在攻击 提莫, 提莫的血变成了 50<br>盖伦 正在攻击 提莫, 提莫的血变成了 0<br>提莫死了！<br>赏金猎人 正在攻击 盲僧, 盲僧的血变成了 390<br>赏金猎人 正在攻击 盲僧, 盲僧的血变成了 325<br>赏金猎人 正在攻击 盲僧, 盲僧的血变成了 260<br>赏金猎人 正在攻击 盲僧, 盲僧的血变成了 195<br>赏金猎人 正在攻击 盲僧, 盲僧的血变成了 130<br>赏金猎人 正在攻击 盲僧, 盲僧的血变成了 65<br>赏金猎人 正在攻击 盲僧, 盲僧的血变成了 0<br>盲僧死了！  </p>
+</blockquote>
+<details><summary>Hero.java</summary>
+
+<pre><code>package charcter;
+import java.io.Serializable;
+public class Hero{
+    public String name;
+    public float hp;
+    public int damage;
+
+    public void attackHero(Hero h){
+        try{
+            Thread.sleep(1000);
         }
-        public boolen isDead(){
-            return 0>=hp?ture:false;
+        catch(InterrruptedException){
+            e.printStackTrace();
         }
-    }</p>
-      <div class="post-button"><a class="btn" href="/2020/07/09/JAVA%E5%9F%BA%E7%A1%80%E6%8A%80%E6%9C%AF/" rel="noopener"><i class="fa fa-angle-double-right fa-fw"></i>Read More</a></div>
+
+        h.hp-=damage;
+        System.out.format(&quot;%s正在攻击%s，%s的血变成了%.0f&quot;,name,h.name,h.name,h=hp);
+        if(h.isDead()){
+         System.out.println(h.name+&quot;死了&quot;);
+        }
+    }
+
+    public boolen isDead(){
+        return 0&gt;=hp?ture:false;
+    }
+}   </code></pre></details>
+<details><summary>attckStart.java</summary>
+
+<pre><code>package multiplethread;
+import charactor.Hero;
+
+public class TestThread {
+    public static void main(String[] args) {
+        Hero gareen = new Hero();
+        gareen.name = &quot;盖伦&quot;;
+        gareen.hp = 616;
+        gareen.damage = 50;
+
+        Hero teemo = new Hero();
+        teemo.name = &quot;提莫&quot;;
+        teemo.hp = 300;
+        teemo.damage = 30;
+
+        Hero bh = new Hero();
+        bh.name = &quot;赏金猎人&quot;;
+        bh.hp = 500;
+        bh.damage = 65;
+
+        Hero leesin = new Hero();
+        leesin.name = &quot;盲僧&quot;;
+        leesin.hp = 455;
+        leesin.damage = 80;
+
+        //盖伦攻击提莫
+        while(!teemo.isDead()){
+            gareen.attackHero(teemo);
+        }
+
+        //赏金猎人攻击盲僧
+        while(!leesin.isDead()){
+            bh.attackHero(leesin);
+        }
+    }
+}</code></pre></details>
+
+<h2 id="多线程-继承线程类"><a href="#多线程-继承线程类" class="headerlink" title="多线程-继承线程类"></a>多线程-继承线程类</h2><p>使用多线程，就可以做到盖伦在攻击提莫的同时，赏金猎人也在攻击盲僧<br>设计一个类KillThread <font color='orange'>继承Thread，并且重写run方法</font></p>
+<p>启动线程办法： 实例化一个KillThread对象，并且调用其,<font color='orange'>start方法启动线程,run方法并不能启动一个线程</font><br>就可以观察到 赏金猎人攻击盲僧的同时，盖伦也在攻击提莫</p>
+<p>使用多线程举例： </p>
+<blockquote>
+<p>盖伦 正在攻击 提莫, 提莫的血变成了 250<br>赏金猎人 正在攻击 盲僧, 盲僧的血变成了 390<br>盖伦 正在攻击 提莫, 提莫的血变成了 200<br>赏金猎人 正在攻击 盲僧, 盲僧的血变成了 325<br>盖伦 正在攻击 提莫, 提莫的血变成了 150<br>赏金猎人 正在攻击 盲僧, 盲僧的血变成了 260<br>盖伦 正在攻击 提莫, 提莫的血变成了 100<br>赏金猎人 正在攻击 盲僧, 盲僧的血变成了 195<br>盖伦 正在攻击 提莫, 提莫的血变成了 50<br>赏金猎人 正在攻击 盲僧, 盲僧的血变成了 130<br>盖伦 正在攻击 提莫, 提莫的血变成了 0<br>提莫死了！<br>赏金猎人 正在攻击 盲僧, 盲僧的血变成了 65<br>赏金猎人 正在攻击 盲僧, 盲僧的血变成了 0<br>盲僧死了！  </p>
+</blockquote>
+<details><summary>attackStart.java</summary>
+
+<pre><code>/*单线程
+//盖伦攻击提莫
+while(!teemo.isDead()){
+    gareen.attackHero(teemo);
+}
+
+//赏金猎人攻击盲僧
+while(!leesin.isDead()){
+    bh.attackHero(leesin);
+}
+ */
+//多线程
+KillThread killThread1 = new KillThread(gareen,teemo);
+killThread1.start();
+KillThread killThread2 = new KillThread(bh,leesin);
+killThread2.start();</code></pre></details>
+<details><summary>KillThread.java</summary>
+
+<pre><code>import charactor.Hero;
+public class KillThread extends Thread{
+
+private Hero h1;
+private Hero h2;
+
+public KillThread(Hero h1, Hero h2){
+    this.h1 = h1;
+    this.h2 = h2;
+}
+
+public void run(){
+    while(!h2.isDead()){
+        h1.attackHero(h2);
+    }
+}</code></pre></details>
+
+<h2 id="多线程-实现Runnable接口"><a href="#多线程-实现Runnable接口" class="headerlink" title="多线程-实现Runnable接口"></a>多线程-实现Runnable接口</h2><p>创建一个Battle类，来实现Runnable借口<br>启动的时候，首先创建一个Battle对象，然后再根据该battle对象创建一个线程对象，并启动</p>
+<pre><code>Battle battle1=new Battle(gareen,teemo);
+new Thread(battle1).start();</code></pre><p>battle1对象实现了Runnable接口，所以有run方法，但是直接调用run方法并不会启动一个新的线程，所以需要借助一个线程对象的start()方法，才能启动一个新的线程<br>所以在创建Thread对象的时候，要把battle1作为构造方法的参数传递进去，这个线程启动的时候，就会去执行battle1.run()方法了</p>
+<details><summary>Battle.java</summary>
+
+<pre><code>package Test01;
+import charactor.Hero;
+/*
+继承线程类
+public class KillThread extends Thread{
+
+    private Hero h1;
+    private Hero h2;
+
+    public KillThread(Hero h1, Hero h2){
+        this.h1 = h1;
+        this.h2 = h2;
+    }
+*/
+
+//视线Runnable接口
+public class Battle implements Runnable{
+    private Hero h1;
+    private Hero h2;
+
+    public Battle(Hero h1, Hero h2){
+        this.h1 = h1;
+        this.h2 = h2;
+    }
+
+    public void run(){
+        while(!h2.isDead()){
+            h1.attackHero(h2);
+        }
+    }
+}</code></pre></details>
+<details><summary>attackStart.java</summary>
+
+<pre><code>/*单线程
+//盖伦攻击提莫
+while(!teemo.isDead()){
+    gareen.attackHero(teemo);
+}
+
+//赏金猎人攻击盲僧
+while(!leesin.isDead()){
+    bh.attackHero(leesin);
+}
+ */
+/*多线程
+KillThread killThread1 = new KillThread(gareen,teemo);
+killThread1.start();
+KillThread killThread2 = new KillThread(bh,leesin);
+killThread2.start();
+ */
+//继承接口
+Battle battle1=new Battle(gareen,teemo);
+new Thread(battle1).start();
+Battle battle2=new Battle(bh,leesin);
+new Thread(battle2).start();</code></pre></details>
+
+<h2 id="创建多线程-匿名类"><a href="#创建多线程-匿名类" class="headerlink" title="创建多线程-匿名类"></a>创建多线程-匿名类</h2><p>使用匿名类，继承Thread,重写run方法，直接在run方法中写业务代码<br>匿名类的一个好处是可以很方便的访问外部的局部变量。</p>
+<details><summary>Unname.java</summary> 
+
+<pre><code>    /*单线程
+    while(!teemo.isDead()){
+        gareen.attackHero(teemo);
+    }
+    while(!leesin.isDead()){
+        bh.attackHero(leesin);
+    }
+     */
+
+    /*多线程
+    KillThread killThread1 = new KillThread(gareen,teemo);
+    killThread1.start();
+    KillThread killThread2 = new KillThread(bh,leesin);
+    killThread2.start();
+     */
+
+    /*继承接口
+    Battle battle1=new Battle(gareen,teemo);
+    new Thread(battle1).start();
+    Battle battle2=new Battle(bh,leesin);
+    new Thread(battle2).start();
+    */
+
+    //匿名类
+    Thread t1= new Thread(){
+        public void run(){
+            //匿名类中用到外部的局部变量teemo，必须把teemo声明为final
+            //但是在JDK7以后，就不是必须加final的了
+            while(!teemo.isDead()){
+                gareen.attackHero(teemo);
+            }               
+        }
+    };
+    t1.start();
+
+    Thread t2= new Thread(){
+        public void run(){
+            while(!leesin.isDead()){
+                bh.attackHero(leesin);
+            }               
+        }
+    };
+    t2.start();
+}</code></pre><p>}</p>
+</details>
+
+<h1 id="常见的线程方法"><a href="#常见的线程方法" class="headerlink" title="常见的线程方法"></a>常见的线程方法</h1><h2 id="Thread-sleep"><a href="#Thread-sleep" class="headerlink" title="Thread.sleep()"></a>Thread.sleep()</h2><p>Thread.sleep(1000); 表示当前线程暂停1000毫秒 ，其他线程不受影响<br>Thread.sleep(1000); 会抛出InterruptedException 中断异常，因为当前线程sleep的时候，有可能被停止，这时就会抛出 InterruptedException</p>
+<details><summary>sleep.java</summary>
+
+<pre><code>public class sleep {
+    public static void main(String[] args) {
+
+        Thread t1= new Thread(){
+            public void run(){
+                int seconds =0;
+                while(true){
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                    System.out.printf(&quot;已经玩了LOL %d 秒%n&quot;, seconds++);
+                }
+            }
+        };
+        t1.start();
+    }
+}</code></pre></details>
+
+<h1 id="join"><a href="#join" class="headerlink" title="join()"></a>join()</h1><p>首先解释一下主线程的概念<br>所有进程，至少会有一个线程即主线程，即main方法开始执行，就会有一个看不见的主线程存在。<br>在42行执行t.join，即表明在主线程中加入该线程。<br>主线程会等待该线程结束完毕， 才会往下运行。  </p>
+<details><summary>join.java</summary>
+    public class join {
+
+<pre><code>    public static void main(String[] args) {
+
+        final Hero gareen = new Hero();
+        gareen.name = &quot;盖伦&quot;;
+        gareen.hp = 616;
+        gareen.damage = 50;
+
+        final Hero teemo = new Hero();
+        teemo.name = &quot;提莫&quot;;
+        teemo.hp = 300;
+        teemo.damage = 30;
+
+        final Hero bh = new Hero();
+        bh.name = &quot;赏金猎人&quot;;
+        bh.hp = 500;
+        bh.damage = 65;
+
+        final Hero leesin = new Hero();
+        leesin.name = &quot;盲僧&quot;;
+        leesin.hp = 455;
+        leesin.damage = 80;
+
+        Thread t1= new Thread(){
+            public void run(){
+               while(!teemo.isDead()){
+                    gareen.attackHero(teemo);
+                }
+            }
+        };
+
+        t1.start();
+
+        //代码执行到这里，一直是main线程在运行
+        try {
+            //t1线程加入到main线程中来，只有t1线程运行结束，才会继续往下走
+            System.out.println(&quot;join&quot;);
+            t1.join();
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        Thread t2= new Thread(){
+            public void run(){
+                while(!leesin.isDead()){
+                    bh.attackHero(leesin);
+                }
+            }
+        };
+        //会观察到盖伦把提莫杀掉后，才运行t2线程
+        t2.start();
+    }
+}</code></pre></details>
+
+<h2 id="线程优先级"><a href="#线程优先级" class="headerlink" title="线程优先级"></a>线程优先级</h2><p>当线程处于竞争关系的时候，优先级高的线程会有更大的几率获得CPU资源<br>为了演示该效果，要把暂停时间去掉，多条线程各自会尽力去占有CPU资源<br>同时把英雄的血量增加100倍，攻击减低到1，才有足够的时间观察到优先级的演示<br>如图可见，线程1的优先级是MAX_PRIORITY，所以它争取到了更多的CPU资源执行代码  </p>
+<pre><code>t1.setPriority(Thread.MAX_PRIORITY);
+t2.setPriority(Thread.MIN_PRIORITY);
+t1.start();
+t2.start();</code></pre><h2 id="临时暂停"><a href="#临时暂停" class="headerlink" title="临时暂停"></a>临时暂停</h2><p>当前线程，临时暂停，使得其他线程可以有更多的机会占用CPU资源</p>
+<pre><code>Thread.yield();</code></pre><h2 id="守护线程"><a href="#守护线程" class="headerlink" title="守护线程"></a>守护线程</h2><p>守护线程的概念是： 当一个进程里，所有的线程都是守护线程的时候，结束当前进程。  </p>
+<p>就好像一个公司有销售部，生产部这些和业务挂钩的部门。除此之外，还有后勤，行政等这些支持部门。  </p>
+<p>如果一家公司销售部，生产部都解散了，那么只剩下后勤和行政，那么这家公司也可以解散了。  </p>
+<p>守护线程就相当于那些支持部门，如果一个进程只剩下守护线程，那么进程就会自动结束。  </p>
+<p>守护线程通常会被用来做日志，性能统计等工作。</p>
+<details><summary>setDaemon.java</summary>
+
+<pre><code>public class TestThread {  
+public static void main(String[] args) {
+
+    Thread t1= new Thread(){
+        public void run(){
+            int seconds =0;
+
+            while(true){
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                System.out.printf(&quot;已经玩了LOL %d 秒%n&quot;, seconds++);
+
+            }              
+        }
+    };
+    t1.setDaemon(true);
+    t1.start();
+}</code></pre></details>
+
+<h1 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h1><h2 id="synchronized-同步对象概念"><a href="#synchronized-同步对象概念" class="headerlink" title="synchronized 同步对象概念"></a>synchronized 同步对象概念</h2><pre><code>Object someObject =new Object();
+synchronized (someObject){
+//此处的代码只有占有了someObject后才可以执行
+}</code></pre><p>synchronized表示当前线程，独占 对象someObject  </p>
+<p>当前线程独占了对象someObject，如果有其他线程试图占有对象someObject，就会等待，直到当前线程释放对someObject的占用。  </p>
+<p>someObject 又叫同步对象，所有的对象，都可以作为同步对象。为了达到同步的效果，必须使用同一个同步对象</p>
+<p>释放同步对象的方式： synchronized 块自然结束，或者有异常抛出</p>
+<h2 id="线程安全的类"><a href="#线程安全的类" class="headerlink" title="线程安全的类"></a>线程安全的类</h2><p>如果一个类，其方法都是有synchronized修饰的，那么该类就叫做线程安全的类</p>
+<p>同一时间，只有一个线程能够进入 这种类的一个实例 的去修改数据，进而保证了这个实例中的数据的安全(不会同时被多线程修改而变成脏数据)</p>
+<h1 id="线程安全相关面试题"><a href="#线程安全相关面试题" class="headerlink" title="线程安全相关面试题"></a>线程安全相关面试题</h1><h2 id="HashMap和Hashtable的区别"><a href="#HashMap和Hashtable的区别" class="headerlink" title="HashMap和Hashtable的区别"></a>HashMap和Hashtable的区别</h2><p>HashMap和Hashtable都实现了Map接口，都是键值对保存数据的方式  </p>
+<p>区别1：HashMap可以存放 null；Hashtable不能存放null<br>区别2：HashMap不是线程安全的类；Hashtable是线程安全的类<br><img src="https://stepimagewm.how2j.cn/2595.png" alt="avatar"></p>
+<h2 id="StringBuffer和StringBuilder的区别"><a href="#StringBuffer和StringBuilder的区别" class="headerlink" title="StringBuffer和StringBuilder的区别"></a>StringBuffer和StringBuilder的区别</h2><p>StringBuffer 是线程安全的<br>StringBuilder 是非线程安全的</p>
+<p>所以当进行大量字符串拼接操作的时候，如果是单线程就用StringBuilder会更快些，如果是多线程，就需要用StringBuffer 保证数据的安全性</p>
+<p>非线程安全的为什么会比线程安全的快？ 因为不需要同步，省略了些时间<br><img src="https://stepimagewm.how2j.cn/2596.png" alt="avatar"></p>
+<h2 id="把非线程安全的集合转换为线程安全"><a href="#把非线程安全的集合转换为线程安全" class="headerlink" title="把非线程安全的集合转换为线程安全"></a>把非线程安全的集合转换为线程安全</h2><p>ArrayList是非线程安全的，换句话说，多个线程可以同时进入一个ArrayList对象的add方法</p>
+<p>借助Collections.synchronizedList，可以把ArrayList转换为线程安全的List。</p>
+<blockquote>
+<p>List<Integer> list1 = new ArrayList&lt;&gt;();<br>List<Integer> list2 = Collections.synchronizedList(list1);</p>
+</blockquote>
+<p>与此类似的，还有HashSet,LinkedList,HashMap等等非线程安全的类，都通过工具类Collections转换为线程安全的</p>
+<h2 id="JAVA-线程之间的交互-WAIT和NOTIFY"><a href="#JAVA-线程之间的交互-WAIT和NOTIFY" class="headerlink" title="JAVA 线程之间的交互 WAIT和NOTIFY"></a>JAVA 线程之间的交互 WAIT和NOTIFY</h2><p>线程之间有交互通知的需求，考虑如下情况：<br>有两个线程，处理同一个英雄。一个加血，一个减血。</p>
+<p>减血的线程，发现血量=1，就停止减血，直到加血的线程为英雄加了血，才可以继续减血</p>
+<p><img src="https://stepimagewm.how2j.cn/796.png" alt="avatar"></p>
+<p>解决方法：<br>在Hero类中：hurt()减血方法：当hp=1的时候，执行this.wait().<br><font color='orange'>this.wait()表示 让占有this的线程等待，并临时释放占有</font><br>进入hurt方法的线程必然是减血线程，this.wait()会让减血线程临时释放对this的占有。 这样加血线程，就有机会进入recover()加血方法了。</p>
+<p>recover() 加血方法：增加了血量，执行this.notify();<br><font color='orange'>this.notify() 表示通知那些等待在this的线程，可以苏醒过来了。</font> 等待在this的线程，恰恰就是减血线程。 一旦recover()结束， 加血线程释放了this，减血线程，就可以重新占有this，并执行后面的减血工作。</p>
+<details><summary>Hero.java</summary>
+
+<pre><code>public synchronized void recover() {
+    hp = hp + 1;
+    System.out.printf(&quot;%s 回血1点,增加血后，%s的血量是%.0f%n&quot;, name, name, hp);
+    // 通知那些等待在this对象上的线程，可以醒过来了，如第20行，等待着的减血线程，苏醒过来
+    this.notify();
+}
+
+public synchronized void hurt() {
+    if (hp == 1) {
+        try {
+            // 让占有this的减血线程，暂时释放对this的占有，并等待
+            this.wait();
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    hp = hp - 1;
+    System.out.printf(&quot;%s 减血1点,减少血后，%s的血量是%.0f%n&quot;, name, name, hp);
+}</code></pre></details>
+
+<h2 id="关于wait、notify和notifyAll"><a href="#关于wait、notify和notifyAll" class="headerlink" title="关于wait、notify和notifyAll"></a>关于wait、notify和notifyAll</h2><p>wait方法和notify方法，并不是Thread线程上的方法，它们是Object上的方法。</p>
+<p>因为所有的Object都可以被用来作为同步对象，所以准确的讲，wait和notify是同步对象上的方法。</p>
+<p><font color='orange'>wait()</font> 让占用了这个同步对象的线程，临时释放当前的占用，并且等待。 所以调用wait是有前提条件的，一定是在synchronized块里，否则就会出错。</p>
+<blockquote>
+<p>public synchronized void hurt() {<br>  。。。<br>  this.wait();<br>  。。。<br>}</p>
+</blockquote>
+<p><font color='orange'>notify()</font>，通知一个等待在这个同步对象上的线程，你可以苏醒过来了，有机会重新占用当前对象了。</p>
+<blockquote>
+<p>public synchronized void recover() {<br>   。。。<br>   this.notify();<br>}</p>
+</blockquote>
+<p><font color='orange'>notifyAll()</font>，通知所有的等待在这个同步对象上的线程，你们可以苏醒过来了，有机会重新占用当前对象了。</p>
+</p>
+      <div class="post-button"><a class="btn" href="/2020/07/09/JAVA%E5%9F%BA%E7%A1%80%E6%8A%80%E6%9C%AF/" rel="noopener"><i class="fa fa-angle-double-right fa-fw"></i>阅读更多</a></div>
     </div>
   </div>
   <div class="lx-entry padding">
@@ -172,7 +553,7 @@
 <h2 id="Spring"><a href="#Spring" class="headerlink" title="Spring"></a>Spring</h2><p>Maven学习：Spring相关jar包的管理<br>Junit学习：测试程序的编写及管理<br>Spring学习：《Spring实战》</p>
 <h2 id="框架学习"><a href="#框架学习" class="headerlink" title="框架学习"></a>框架学习</h2><p> Spring、SpringMVC、Mybatis<br> SpringBoot 和 SpringCloud。</p>
 </p>
-      <div class="post-button"><a class="btn" href="/2020/07/08/JAVA%E5%90%8E%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%A7%84%E5%88%92/" rel="noopener"><i class="fa fa-angle-double-right fa-fw"></i>Read More</a></div>
+      <div class="post-button"><a class="btn" href="/2020/07/08/JAVA%E5%90%8E%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%A7%84%E5%88%92/" rel="noopener"><i class="fa fa-angle-double-right fa-fw"></i>阅读更多</a></div>
     </div>
   </div>
   <div class="lx-entry padding">
@@ -181,7 +562,7 @@
       <span class="lx-post-detail"><i class="fa fa-calendar-o"></i> 2020-07-07</span>
       <p><p>o(￣▽￣)ｄ</p>
 </p>
-      <div class="post-button"><a class="btn" href="/2020/07/07/%E6%B5%8B%E8%AF%95/" rel="noopener"><i class="fa fa-angle-double-right fa-fw"></i>Read More</a></div>
+      <div class="post-button"><a class="btn" href="/2020/07/07/%E6%B5%8B%E8%AF%95/" rel="noopener"><i class="fa fa-angle-double-right fa-fw"></i>阅读更多</a></div>
     </div>
   </div>
   <div class="lx-entry padding">
@@ -202,7 +583,7 @@
 
 <p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
 </p>
-      <div class="post-button"><a class="btn" href="/2020/07/07/hello-world/" rel="noopener"><i class="fa fa-angle-double-right fa-fw"></i>Read More</a></div>
+      <div class="post-button"><a class="btn" href="/2020/07/07/hello-world/" rel="noopener"><i class="fa fa-angle-double-right fa-fw"></i>阅读更多</a></div>
     </div>
   </div>
 
@@ -242,18 +623,18 @@
   </div>
   <nav class="menu-container">
   <ul class="menu-items">
-    <li><a href="/"><i class="fa fa-home fa-fw"></i>Home</a></li>
-    <li><a href="/archives/"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+    <li><a href="/"><i class="fa fa-home fa-fw"></i>首页</a></li>
+    <li><a href="/archives/"><i class="fa fa-archive fa-fw"></i>归档</a></li>
     
     <li class="has-sub"><span class="dropdown-heading">
-      <i class="fa fa-bookmark fa-fw"></i>Pages</span>
+      <i class="fa fa-bookmark fa-fw"></i>页面</span>
         <ul>
           <li><a href="/guestbook/">Guestbook</a></li>
         <li><a href="/about/">About</a></li>
         </ul>
     </li>
     <li class="has-sub"><span class="dropdown-heading">
-      <i class="fa fa-link fa-fw"></i>Friends</span>
+      <i class="fa fa-link fa-fw"></i>友链</span>
         <ul>
           <li> <a href="https://lx.js.org" target="_blank">Theme-Lx</a></li>
         </ul>
