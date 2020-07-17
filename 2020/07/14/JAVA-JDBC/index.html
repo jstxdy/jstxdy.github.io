@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="theme-color" content=#58b77a>
+  <title>JDBC | North-Box</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="NorthBox">
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+  <script id="hexo-configurations">
+  var CONFIG = {
+    root: '/',
+    theme: 'lx',
+    version: '0.3.9',
+    localsearch:{
+      "enable": false,
+      "trigger": "auto",
+      "top_n_per_article": 1,
+      "unescape": false,
+      "preload": false
+      },
+    path: 'null'
+  };
+</script>
+
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/css/main.min.css">
+  <style type="text/css">
+    pre,
+    code {
+      font-family: 'Fira Code', monospace;
+    }
+    html {
+      font-family: sans-serif;
+    }
+    body {
+      font-family: sans-serif;
+    }
+    h1, h2, h3, h4, h5, figure {
+      font-family: sans-serif;
+    }
+    .menu-container{
+      font-family: sans-serif;
+    }
+  </style>
+
+  <script src="//cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/js/jquery.jside.menu.js"></script>
+	<script>
+	$(document).ready(function(){
+	$(".menu-container").jSideMenu({
+	    jSidePosition: "position-right",
+	    jSideSticky: true,
+	    jSideSkin: "greenish",
+	     });
+	}); 
+	</script>
+  
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Fira Code:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css">
+<meta name="generator" content="Hexo 4.2.1"></head>
+<body>
+<div class="single">
+
+<div id="page">
+<div id="lx-aside" style="background-image: url(//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/images/post_cover.jpeg)" data-stellar-background-ratio="0.5">
+  <div class="overlay">
+  <div class="page-title">
+    <div class="avatar"><a href="/"><img src="/images/avatar.jpeg"></a></div>
+    <span>2020-07-14</span>
+    <h2>JDBC</h2>
+    
+    </div>
+</div>
+</div>
+
+<div id="lx-main-content">
+  <div class="lx-post">
+    <div class="lx-entry padding">
+      <div>
+        <h1 id="JDBC基础教程"><a href="#JDBC基础教程" class="headerlink" title="JDBC基础教程"></a>JDBC基础教程</h1><h2 id="修改数据库"><a href="#修改数据库" class="headerlink" title="修改数据库"></a>修改数据库</h2><pre><code>Statement s = c.createStatement();
+String sql = &quot;insert into hero values(null,&quot;+&quot;&apos;提莫&apos;&quot;+&quot;,&quot;+313.0f+&quot;,&quot;+50+&quot;)&quot;;
+s.execute(sql);</code></pre><h2 id="关闭数据库"><a href="#关闭数据库" class="headerlink" title="关闭数据库"></a>关闭数据库</h2><p>数据库的连接是有限资源，相关操作结束后，养成关闭数据库的好习惯<br>先关闭Statement<br>后关闭Connection</p>
+<pre><code>finally {
+        // 数据库的连接时有限资源，相关操作结束后，养成关闭数据库的好习惯
+        // 先关闭Statement
+        if (s != null)
+            try {
+                s.close();
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        // 后关闭Connection
+        if (c != null)
+            try {
+                c.close();
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+    }</code></pre><h1 id="CRUD"><a href="#CRUD" class="headerlink" title="CRUD"></a>CRUD</h1><h2 id="增删改"><a href="#增删改" class="headerlink" title="增删改"></a>增删改</h2><pre><code>String insert = &quot;insert into hero values(&apos;1&apos;, &apos;增加一条数据&apos;, 666, 60)&quot;;
+String update = &quot;update hero set name = &apos;更新&apos; where id = 205&quot;;
+String delete = &quot;delete from hero where id = 204&quot;;</code></pre><h2 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h2><pre><code>String sql = &quot;select * from hero&quot;;
+// 执行查询语句，并把结果集返回给ResultSet
+ResultSet rs = s.executeQuery(sql);
+while (rs.next()) {
+    int id = rs.getInt(&quot;id&quot;);// 可以使用字段名
+    String name = rs.getString(2);// 也可以使用字段的顺序
+    float hp = rs.getFloat(&quot;hp&quot;);
+    int damage = rs.getInt(4);
+    System.out.printf(&quot;%d\t%s\t%f\t%d%n&quot;, id, name, hp, damage);
+}
+// 不一定要在这里关闭ReultSet，因为Statement关闭的时候，会自动关闭ResultSet
+// rs.close();</code></pre><h2 id="SQL语句判断账号密码是否正确"><a href="#SQL语句判断账号密码是否正确" class="headerlink" title="SQL语句判断账号密码是否正确"></a>SQL语句判断账号密码是否正确</h2><ol>
+<li><p>创建一个用户表，有字段name,password</p>
+</li>
+<li><p>插入一条数据</p>
+<p> insert into user values(null,’dashen’,’thisispassword’);</p>
+</li>
+<li><p>SQL语句判断账号密码是否正确<br>判断账号密码的正确方式是根据账号和密码到表中去找数据，如果有数据，就表明密码正确了，如果没数据，就表明密码错误。</p>
+<pre><code>String name = &quot;dashen&quot;;
+String password = &quot;thisispassword1&quot;;
+
+String sql = &quot;select * from user where name = &apos;&quot; + name +&quot;&apos; and password = &apos;&quot; + password+&quot;&apos;&quot;;
+
+// 执行查询语句，并把结果集返回给ResultSet
+ResultSet rs = s.executeQuery(sql);
+
+if(rs.next())
+    System.out.println(&quot;账号密码正确&quot;);
+else
+    System.out.println(&quot;账号密码错误&quot;);</code></pre></li>
+</ol>
+<h2 id="获取总数"><a href="#获取总数" class="headerlink" title="获取总数"></a>获取总数</h2><pre><code>String sql = &quot;select count(*) from hero&quot;;
+ResultSet rs = s.executeQuery(sql);
+int total = 0;
+while (rs.next()) {
+    total = rs.getInt(1);
+}
+System.out.println(&quot;表Hero中总共有:&quot; + total+&quot; 条数据&quot;);</code></pre><h1 id="在JDBC中使用预编译STATEMENT-以及它的优点"><a href="#在JDBC中使用预编译STATEMENT-以及它的优点" class="headerlink" title="在JDBC中使用预编译STATEMENT 以及它的优点"></a>在JDBC中使用预编译STATEMENT 以及它的优点</h1><h2 id="使用PreparedStatement"><a href="#使用PreparedStatement" class="headerlink" title="使用PreparedStatement"></a>使用PreparedStatement</h2><p>和 Statement一样，PreparedStatement也是用来执行sql语句的<br>与创建Statement不同的是，需要根据sql语句创建PreparedStatement<br>除此之外，还能够通过设置参数，指定相应的值，而不是Statement那样使用字符串拼接</p>
+<p>注： 这是JAVA里唯二的基1的地方，另一个是查询语句中的ResultSet也是基1的。</p>
+<pre><code>String sql = &quot;insert into hero values(null,?,?,?)&quot;;
+try (Connection c = DriverManager.getConnection(&quot;jdbc:mysql://127.0.0.1:3306/game?characterEncoding=UTF-8&quot;,&quot;root&quot;, &quot;&quot;);
+    PreparedStatement ps = c.prepareStatement(sql);
+) {
+    ps.setString(1, &quot;提莫&quot;);
+    ps.setFloat(2, 313.0f);
+    ps.setInt(3, 50);
+    // 执行
+    ps.execute();
+}</code></pre><h2 id="PreparedStatement的优点"><a href="#PreparedStatement的优点" class="headerlink" title="PreparedStatement的优点"></a>PreparedStatement的优点</h2><h3 id="参数设置"><a href="#参数设置" class="headerlink" title="参数设置"></a>参数设置</h3><p>Statement 需要进行字符串拼接，可读性和维护性比较差</p>
+<pre><code>String sql = &quot;insert into hero values(null,&quot;+&quot;&apos;提莫&apos;&quot;+&quot;,&quot;+313.0f+&quot;,&quot;+50+&quot;)&quot;;</code></pre><p>PreparedStatement 使用参数设置，可读性好，不易犯错</p>
+<pre><code>String sql = &quot;insert into hero values(null,?,?,?)&quot;;</code></pre><h3 id="性能表现"><a href="#性能表现" class="headerlink" title="性能表现"></a>性能表现</h3><p>PreparedStatement有预编译机制，性能比Statement更快</p>
+<pre><code>// Statement执行10次，需要10次把SQL语句传输到数据库端
+// 数据库要对每一次来的SQL语句进行编译处理
+for (int i = 0; i &lt; 10; i++) {
+    String sql0 = &quot;insert into hero values(null,&quot; + &quot;&apos;提莫&apos;&quot; + &quot;,&quot;
+            + 313.0f + &quot;,&quot; + 50 + &quot;)&quot;;
+    s.execute(sql0);
+}
+s.close();
+
+// PreparedStatement 执行10次，只需要1次把SQL语句传输到数据库端，数据库对带?的SQL进行预编译
+// 每次执行，只需要传输参数到数据库端
+// 1. 网络传输量比Statement更小
+// 2. 数据库不需要再进行编译，响应更快
+for (int i = 0; i &lt; 10; i++) {
+    ps.setString(1, &quot;提莫&quot;);
+    ps.setFloat(2, 313.0f);
+    ps.setInt(3, 50);
+    ps.execute();
+}</code></pre><h3 id="防止SQL注入式攻击"><a href="#防止SQL注入式攻击" class="headerlink" title="防止SQL注入式攻击"></a>防止SQL注入式攻击</h3><pre><code>// 假设name是用户提交来的数据
+String name = &quot;&apos;盖伦&apos; OR 1=1&quot;;
+String sql0 = &quot;select * from hero where name = &quot; + name;
+// 拼接出来的SQL语句就是
+// select * from hero where name = &apos;盖伦&apos; OR 1=1
+// 因为有OR 1=1，所以恒成立，那么就会把所有的英雄都查出来，而不只是盖伦
+// 如果Hero表里的数据是海量的，比如几百万条，把这个表里的数据全部查出来，会让数据库负载变高，CPU100%，内存消耗光，响应变得极其缓慢
+System.out.println(sql0);
+ResultSet rs0 = s.executeQuery(sql0);
+while (rs0.next()) {
+    String heroName = rs0.getString(&quot;name&quot;);
+    System.out.println(heroName);
+}
+s.execute(sql0);
+
+// 使用预编译Statement就可以杜绝SQL注入
+ps.setString(1, name);
+ResultSet rs = ps.executeQuery();
+// 查不出数据出来
+while (rs.next()) {
+    String heroName = rs.getString(&quot;name&quot;);
+    System.out.println(heroName);
+}</code></pre><h2 id="execute与executeUpdate的区别"><a href="#execute与executeUpdate的区别" class="headerlink" title="execute与executeUpdate的区别"></a>execute与executeUpdate的区别</h2><h3 id="相同点：都可以执行增加，删除，修改"><a href="#相同点：都可以执行增加，删除，修改" class="headerlink" title="相同点：都可以执行增加，删除，修改"></a>相同点：都可以执行增加，删除，修改</h3><pre><code>s.execute(sqlInsert);
+s.execute(sqlDelete);
+s.execute(sqlUpdate);
+s.executeUpdate(sqlInsert);
+s.executeUpdate(sqlDelete);
+s.executeUpdate(sqlUpdate);</code></pre><h3 id="不同1："><a href="#不同1：" class="headerlink" title="不同1："></a>不同1：</h3><pre><code>// 不同1：execute可以执行查询语句，然后通过getResultSet，把结果集取出来
+String sqlSelect = &quot;select * from hero&quot;;
+s.execute(sqlSelect);
+ResultSet rs = s.getResultSet();
+while (rs.next()) {
+    System.out.println(rs.getInt(&quot;id&quot;));
+}
+
+// executeUpdate不能执行查询语句
+// s.executeUpdate(sqlSelect);</code></pre><h3 id="不同2"><a href="#不同2" class="headerlink" title="不同2:"></a>不同2:</h3><pre><code>// execute返回boolean类型，true表示执行的是查询语句，false表示执行的是insert,delete,update等等
+boolean isSelect = s.execute(sqlSelect);
+System.out.println(isSelect);
+
+// executeUpdate返回的是int，表示有多少条数据受到了影响
+String sqlUpdate = &quot;update Hero set hp = 300 where id &lt; 100&quot;;
+int number = s.executeUpdate(sqlUpdate);
+System.out.println(number);</code></pre><h1 id="获取自增长ID以及表的元数据"><a href="#获取自增长ID以及表的元数据" class="headerlink" title="获取自增长ID以及表的元数据"></a>获取自增长ID以及表的元数据</h1><h2 id="获取自增长id"><a href="#获取自增长id" class="headerlink" title="获取自增长id"></a>获取自增长id</h2><p>在Statement通过execute或者executeUpdate执行完插入语句后，MySQL会为新插入的数据分配一个自增长id，(前提是这个表的id设置为了自增长,在Mysql创建表的时候，AUTO_INCREMENT就表示自增长)</p>
+<pre><code>CREATE TABLE hero (
+id int(11) AUTO_INCREMENT,
+...
+}</code></pre><p>但是无论是execute还是executeUpdate都不会返回这个自增长id是多少。需要通过Statement的getGeneratedKeys获取该id<br>注： 第20行的代码，后面加了个Statement.RETURN_GENERATED_KEYS参数，以确保会返回自增长ID。 通常情况下不需要加这个，有的时候需要加，所以先加上，保险一些</p>
+<pre><code>PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);</code></pre><details><summary>getGeneratedKeys.java</summary>
+
+<pre><code>ps.setString(1, &quot;盖伦&quot;);
+ps.setFloat(2, 616);
+ps.setInt(3, 100);
+
+// 执行插入语句
+ps.execute();
+
+// 在执行完插入语句后，MySQL会为新插入的数据分配一个自增长id
+// JDBC通过getGeneratedKeys获取该id
+ResultSet rs = ps.getGeneratedKeys();
+if (rs.next()) {
+    int id = rs.getInt(1);
+    System.out.println(id);
+}</code></pre></details>
+
+<h2 id="获取表的元数据"><a href="#获取表的元数据" class="headerlink" title="获取表的元数据"></a>获取表的元数据</h2><p><font color='navyblue'>元数据概念：</font>和数据库服务器相关的数据，比如数据库版本，有哪些表，表有哪些字段，字段类型是什么等等。</p>
+<details><summary>getDatabase.java</summary>
+
+<pre><code>    try (Connection c = DriverManager.getConnection(&quot;jdbc:mysql://127.0.0.1:3306/game?characterEncoding=UTF-8&quot;,&quot;root&quot;, &quot;&quot;);) {
+
+    // 查看数据库层面的元数据
+    DatabaseMetaData dbmd = c.getMetaData();
+    // 获取数据库服务器产品名称
+    System.out.println(&quot;数据库产品名称:\t&quot;+dbmd.getDatabaseProductName());
+    // 获取数据库服务器产品版本号
+    System.out.println(&quot;数据库产品版本:\t&quot;+dbmd.getDatabaseProductVersion());
+    // 获取数据库服务器用作类别和表名之间的分隔符 如test.user
+    System.out.println(&quot;数据库和表分隔符:\t&quot;+dbmd.getCatalogSeparator());
+    // 获取驱动版本
+    System.out.println(&quot;驱动版本:\t&quot;+dbmd.getDriverVersion());
+    System.out.println(&quot;可用的数据库列表：&quot;);
+    // 获取数据库名称
+    ResultSet rs = dbmd.getCatalogs();
+    while (rs.next()) {
+        System.out.println(&quot;数据库名称:\t&quot;+rs.getString(1));
+    }
+} </code></pre></details>
+
+<h1 id="如何在JDBC中使用事务"><a href="#如何在JDBC中使用事务" class="headerlink" title="如何在JDBC中使用事务"></a>如何在JDBC中使用事务</h1><h2 id="使用事务"><a href="#使用事务" class="headerlink" title="使用事务"></a>使用事务</h2><p>在事务中的多个操作，要么都成功，要么都失败<br>通过<font color='orange'>c.setAutoCommit(false)</font>关闭自动提交<br>使用<font color='orange'>c.commit()</font>进行手动提交<br>Commit.java的代码就处于同一个事务当中，要么都成功，要么都失败<br>所以，虽然第一条SQL语句是可以执行的，但是第二条SQL语句有错误，其结果就是两条SQL语句都没有被提交。 除非两条SQL语句都是正确的。</p>
+<details><summary>Commit.java</summary>
+
+<pre><code>// 有事务的前提下
+// 在事务中的多个操作，要么都成功，要么都失败
+c.setAutoCommit(false);
+
+// 加血的SQL
+String sql1 = &quot;update hero set hp = hp +1 where id = 22&quot;;
+s.execute(sql1);
+
+// 减血的SQL
+// 不小心写错写成了 updata(而非update)
+String sql2 = &quot;updata hero set hp = hp -1 where id = 22&quot;;
+s.execute(sql2);
+
+// 手动提交
+c.commit();</code></pre></details>
+
+<h2 id="MYSQL-表的类型必须是INNODB才支持事务"><a href="#MYSQL-表的类型必须是INNODB才支持事务" class="headerlink" title="MYSQL 表的类型必须是INNODB才支持事务"></a>MYSQL 表的类型必须是INNODB才支持事务</h2><p>在Mysql中，只有当表的类型是INNODB的时候，才支持事务，所以需要把表的类型设置为INNODB,否则无法观察到事务.</p>
+<p>修改表的类型为INNODB的SQL：</p>
+<pre><code>alter table hero ENGINE  = innodb;</code></pre><p>查看表的类型的SQL:</p>
+<pre><code>show table status from how2java; </code></pre><p>不过有个前提，就是当前的MYSQL服务器本身要支持INNODB,如果不支持，请看 开启MYSQL INNODB的办法</p>
+<h1 id="使用JDBC做一个ORM例子"><a href="#使用JDBC做一个ORM例子" class="headerlink" title="使用JDBC做一个ORM例子"></a>使用JDBC做一个ORM例子</h1><p>ORM=Object Relationship Database Mapping,对象和关系数据库的映射<br>简单说，一个对象，对应数据库里的一条记录</p>
+<details><summary>ORM.java</summary>
+
+<p>package Test01;</p>
+<p>//导入包<br>public class ORM {<br>    public static HeroJDBC get(int id) {<br>        HeroJDBC hero = null;</p>
+<pre><code>    Connection con;
+    //jdbc驱动
+    String driver=&quot;com.mysql.cj.jdbc.Driver&quot;;
+    //这里我的数据库是cxxt
+    String url=&quot;jdbc:mysql://localhost:3306/game?&amp;useSSL=false&amp;serverTimezone=UTC&quot;;
+    String user=&quot;root&quot;;
+    String password=&quot;&quot;;
+    try {
+        //注册JDBC驱动程序
+        Class.forName(driver);
+        //建立连接
+        con = DriverManager.getConnection(url, user, password);
+        if (!con.isClosed()) {
+            System.out.println(&quot;数据库连接成功&quot;);
+        }
+        Statement stmt=con.createStatement();
+        String sql = &quot;select * from hero where id = &quot; + id;
+
+        ResultSet rs = stmt.executeQuery(sql);
+
+    // 因为id是唯一的，ResultSet最多只能有一条记录
+    // 所以使用if代替while
+    if (rs.next()) {
+        hero = new HeroJDBC();
+        String name = rs.getString(2);
+        float hp = rs.getFloat(&quot;hp&quot;);
+        int damage = rs.getInt(4);
+        hero.name = name;
+        hero.hp = hp;
+        hero.damage = damage;
+        hero.id = id;
+    }
+    } catch (SQLException | ClassNotFoundException e) {
+    // TODO Auto-generated catch block
+        e.printStackTrace();
+    }
+        return hero;
+    }
+
+public static void main(String[] args) {
+    HeroJDBC h = get(1);
+    System.out.println(h.id+h.name+h.hp+h.damage);
+
+    }
+}</code></pre></details>
+<details><summary>HeroJDBC.java</summary>
+
+<pre><code>public class HeroJDBC {
+//增加id属性
+public int id;
+public String name;
+public float hp;
+public int damage;</code></pre><p>}</p>
+</details>
+
+<h1 id="基于JDBC设计DAO的实例"><a href="#基于JDBC设计DAO的实例" class="headerlink" title="基于JDBC设计DAO的实例"></a>基于JDBC设计DAO的实例</h1><p><font color='navyblue'>DAO=DataAccess Object</font><br>数据访问对象</p>
+<p>实际上就是运用了练习-ORM中的思路，把数据库相关的操作都封装在这个类里面，其他地方看不到JDBC的代码</p>
+<h2 id="DAO接口"><a href="#DAO接口" class="headerlink" title="DAO接口"></a>DAO接口</h2><details><summary>DAO.java</summary>
+
+<pre><code>import java.util.List;
+import charactor.HeroJDBC;
+public interface DAO {
+    //增加
+    public void add(Hero hero);
+    //修改
+    public void update(Hero hero);
+    //删除
+    public void delete(int id);
+    //获取
+    public Hero get(int id);
+    //查询
+    public List&lt;Hero&gt; list();
+    //分页查询
+    public List&lt;Hero&gt; list(int start, int count);
+}</code></pre></details>
+
+<h2 id="HeroDAO"><a href="#HeroDAO" class="headerlink" title="HeroDAO"></a>HeroDAO</h2><p>设计类HeroDAO，实现接口DAO</p>
+<p>这个HeroDAO和答案-ORM很接近，做了几个改进：</p>
+<p>1.把驱动的初始化放在了构造方法HeroDAO里：</p>
+<pre><code>public HeroDAO() {
+try {
+    Class.forName(&quot;com.mysql.jdbc.Driver&quot;);
+} catch (ClassNotFoundException e) {
+    e.printStackTrace();
+}
+}</code></pre><p>因为驱动初始化只需要执行一次，所以放在这里更合适，其他方法里也不需要写了，代码更简洁  </p>
+<p>2.提供了一个getConnection方法返回连接<br>所有的数据库操作都需要事先拿到一个数据库连接Connection，以前的做法每个方法里都会写一个，如果要改动密码，那么每个地方都需要修改。 通过这种方式，只需要修改这一个地方就可以了。 代码变得更容易维护，而且也更加简洁。</p>
+<h1 id="数据库连接池"><a href="#数据库连接池" class="headerlink" title="数据库连接池"></a>数据库连接池</h1><h2 id="原理-传统方式"><a href="#原理-传统方式" class="headerlink" title="原理-传统方式"></a>原理-传统方式</h2><p>当有多个线程，每个线程都需要连接数据库执行SQL语句的话，那么每个线程都会创建一个连接，并且在使用完毕后，关闭连接。</p>
+<p>创建连接和关闭连接的过程也是比较消耗时间的，当多线程并发的时候，系统就会变得很卡顿。</p>
+<p>同时，一个数据库同时支持的连接总数也是有限的，如果多线程并发量很大，那么数据库连接的总数就会被消耗光，后续线程发起的数据库连接就会失败。</p>
+<p><img src="https://stepimagewm.how2j.cn/2654.png" alt="avatar"></p>
+<h2 id="原理-使用池"><a href="#原理-使用池" class="headerlink" title="原理-使用池"></a>原理-使用池</h2><p>与传统方式不同，连接池在使用之前，就会创建好一定数量的连接。</p>
+<p>如果有任何线程需要使用连接，那么就从连接池里面借用，而不是自己重新创建.<br>使用完毕后，又把这个连接归还给连接池供下一次或者其他线程使用。</p>
+<p>倘若发生多线程并发情况，连接池里的连接被借用光了，那么其他线程就会临时等待，直到有连接被归还回来，再继续使用。</p>
+<p>整个过程，这些连接都不会被关闭，而是不断的被循环使用，从而节约了启动和关闭连接的时间。</p>
+<p><img src="https://stepimagewm.how2j.cn/2655.png" alt="avatar"></p>
+<h2 id="ConnectionPool构造方法和初始化"><a href="#ConnectionPool构造方法和初始化" class="headerlink" title="ConnectionPool构造方法和初始化"></a>ConnectionPool构造方法和初始化</h2><ol>
+<li><p>ConnectionPool() 构造方法约定了这个连接池一共有多少连接</p>
+</li>
+<li><p>在init() 初始化方法中，创建了size条连接。 注意，这里不能使用try-with-resource这种自动关闭连接的方式，因为连接恰恰需要保持不关闭状态，供后续循环使用</p>
+</li>
+<li><p>getConnection， 判断是否为空，如果是空的就wait等待，否则就借用一条连接出去</p>
+</li>
+<li><p>returnConnection， 在使用完毕后，归还这个连接到连接池，并且在归还完毕后，调用notifyAll，通知那些等待的线程，有新的连接可以借用了。</p>
+</li>
+</ol>
+<p>注：连接池设计用到了多线程的wait和notifyAll，这些内容可以在多线程交互章节查阅学习。</p>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="lx-navigation">
+	<div class="lx-cover prev lx-cover-sm" style="background-image: url(//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/images/footer-l.jpeg)">
+		<div class="overlay"></div>
+		<a class="copy" href="/2020/07/15/JAVA-Swing/">
+			<div class="display-t">
+				<div class="display-tc">
+					<div>
+						<span>Next</span>
+						<h3>图形界面</h3>
+					</div>
+				</div>
+			</div>
+		</a>
+	</div>
+        <div class="lx-cover next lx-cover-sm" style="background-image: url(//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/images/footer-r.jpeg)">
+		<div class="overlay"></div>
+		<a class="copy" href="/2020/07/10/Spring%E5%AD%A6%E4%B9%A0/">
+			<div class="display-t">
+				<div class="display-tc">
+					<div>
+						<span>Prev</span>
+						<h3>JAVA后端学...</h3>
+					</div>
+				</div>
+			</div>
+		</a>
+	</div>
+</div>
+
+</div>
+
+<footer>
+  <div>
+  Copyright &copy; 2019.<a href="/">North-Box</a><br>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme <a href="https://lx.js.org" target="_blank">Lx</a><br>
+  </div>
+</footer>
+
+</div>
+
+<button class="hamburger hamburger--arrow-r" type="button">
+    <div class="hamburger-box">
+      <div class="hamburger-inner"></div>
+    </div>
+</button> 
+<div class="menu visibility">
+  <div class="menu-head">
+    <span class="layer">
+      <div class="col">
+        <div class="row for-pic">
+          <div class="profile-pic">
+            <a href="/"><img src="/images/avatar.jpeg" alt="NorthBox"/></a>
+          </div>
+        </div>
+        <div class="row for-name">
+          <p>NorthBox</p>
+          <span class="tagline">Hello, World!</span>
+        </div>
+      </div>
+    </span>
+  </div>
+  <nav class="menu-container">
+  <ul class="menu-items">
+    <li><a href="/"><i class="fa fa-home fa-fw"></i>首页</a></li>
+    <li><a href="/archives/"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+    
+    <li class="has-sub"><span class="dropdown-heading">
+      <i class="fa fa-bookmark fa-fw"></i>页面</span>
+        <ul>
+          <li><a href="/guestbook/">Guestbook</a></li>
+        <li><a href="/about/">About</a></li>
+        </ul>
+    </li>
+    <li class="has-sub"><span class="dropdown-heading">
+      <i class="fa fa-link fa-fw"></i>友链</span>
+        <ul>
+          <li> <a href="https://lx.js.org" target="_blank">Theme-Lx</a></li>
+        </ul>
+    </li>
+  </ul>
+  </nav>
+</div>
+
+<div class="gototop js-top">
+  <a href="#" class="js-gotop"><i class="fa fa-arrow-up"></i></a>
+</div>
+<script src="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/js/jquery.easing.min.js"></script>
+<script>
+(function () {
+	"use strict";
+	var goToTop = function() {
+		$(".js-gotop").on("click", function(event){
+			event.preventDefault();
+			$("html, body").animate({
+				scrollTop: $("html").offset().top
+			}, 500, "easeInOutExpo");
+			return false;
+		});
+		$(window).scroll(function(){
+			var $win = $(window);
+			if ($win.scrollTop() > 200) {
+				$(".js-top").addClass("active");
+			} else {
+				$(".js-top").removeClass("active");
+			}
+		});
+	};
+	$(function(){
+		goToTop();
+	});
+}());
+</script>
+
+
+</body>
+</html>

@@ -81,6 +81,900 @@
 
   <div class="lx-entry padding">
     <div>
+      <h2 class="title"><a href="/2020/07/15/JAVA-Swing/">图形界面</a></h2>
+      <span class="lx-post-detail"><i class="fa fa-calendar-o"></i> 2020-07-15</span>
+      <p><h1 id="一个简单的-SWING-例子"><a href="#一个简单的-SWING-例子" class="headerlink" title="一个简单的 SWING 例子"></a>一个简单的 SWING 例子</h1><p><font color='navyblue'>GUI:</font>Graphic User Interface 图形用户界面</p>
+<p>JFrame是GUI中的容器<br>JButton是最常见的组件- 按钮<br>注意：f.setVisible(true); 会对所有的组件进行渲染，所以一定要放在最后面</p>
+<h1 id="SWING-如何进行事件监听"><a href="#SWING-如何进行事件监听" class="headerlink" title="SWING 如何进行事件监听"></a>SWING 如何进行事件监听</h1><h2 id="按钮监听"><a href="#按钮监听" class="headerlink" title="按钮监听"></a>按钮监听</h2><p>创建一个匿名类实现ActionListener接口，当按钮被点击时，actionPerformed方法就会被调用</p>
+<pre><code>//匿名类实现ActionListener接口
+b.addActionListener(new ActionListener() {
+    // 当按钮被点击时，就会触发 ActionEvent事件,actionPerformed 方法就会被执行
+    public void actionPerformed(ActionEvent e) {
+        l.setVisible(false);
+    }
+});</code></pre><h2 id="鼠标监听"><a href="#鼠标监听" class="headerlink" title="鼠标监听"></a>鼠标监听</h2><p>MouseListener 鼠标监听器<br>mouseReleased 鼠标释放<br>mousePressed 鼠标按下<br>mouseExited 鼠标退出<br>mouseEntered 鼠标进入<br>mouseClicked 鼠标点击<br>在本例中，使用mouseEntered，当鼠标进入图片的时候，图片就移动位置</p>
+<details><summary>TestMouseListener.java</summary>
+
+<pre><code>public class TestMouseListener {
+public static void main(String[] args) {
+
+    final JFrame f = new JFrame(&quot;LoL&quot;);
+    f.setSize(800, 600);
+    f.setLocationRelativeTo(null);
+    f.setLayout(null);
+
+    final JLabel l = new JLabel();
+    ImageIcon i = new ImageIcon(&quot;C:\\Users\\LENOVO\\Pictures\\Camera Roll\\A.png&quot;);
+    l.setIcon(i);
+    l.setBounds(375, 275, i.getIconWidth(), i.getIconHeight());
+
+    f.add(l);
+
+    l.addMouseListener(new MouseListener() {
+         public void mouseEntered(MouseEvent e) {
+
+            Random r = new Random();
+
+            int x = r.nextInt(f.getWidth() - l.getWidth());
+            int y = r.nextInt(f.getHeight() - l.getHeight());
+
+            l.setLocation(x, y);
+        }
+    });
+    f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    f.setVisible(true);
+}</code></pre></details>
+
+<h2 id="适配器"><a href="#适配器" class="headerlink" title="适配器"></a>适配器</h2><p><font color='navyblue'>MouseAdapter</font>鼠标监听适配器,一般说来在写监听器的时候，会实现MouseListener。<br>但是MouseListener里面有很多方法实际上都没有用到，比如mouseReleased ，mousePressed，mouseExited等等。<br>这个时候就可以使用 鼠标监听适配器，MouseAdapter 只需要重写必要的方法即可。</p>
+<details><summary>TestMosueAdapter.java</summary>
+        // MouseAdapter 适配器，只需要重写用到的方法，没有用到的就不用写了
+        l.addMouseListener(new MouseAdapter() {
+            // 只有mouseEntered用到了
+            public void mouseEntered(MouseEvent e) {
+
+<pre><code>        Random r = new Random();
+
+        int x = r.nextInt(f.getWidth() - l.getWidth());
+        int y = r.nextInt(f.getHeight() - l.getHeight());
+
+        l.setLocation(x, y);
+
+    }
+});</code></pre></details>
+
+<h1 id="SWING-的容器-JFRAME和JDIALOG"><a href="#SWING-的容器-JFRAME和JDIALOG" class="headerlink" title="SWING 的容器 JFRAME和JDIALOG"></a>SWING 的容器 JFRAME和JDIALOG</h1><p>java的图形界面中，容器是用来存放 按钮，输入框等组件的。</p>
+<p>窗体型容器有两个，一个是JFrame,一个是JDialog</p>
+<h2 id="JFrame"><a href="#JFrame" class="headerlink" title="JFrame"></a>JFrame</h2><p>JFrame是最常用的窗体型容器，默认情况下，在右上角有最大化最小化按钮</p>
+<p><img src="https://stepimagewm.how2j.cn/887.png" alt="avatar"></p>
+<pre><code>public static void main(String[] args) {
+    //普通的窗体，带最大和最小化按钮
+    JFrame f = new JFrame(&quot;LoL&quot;);
+    f.setSize(400, 300);
+    f.setLocation(200, 200);
+    f.setLayout(null);
+    JButton b = new JButton(&quot;一键秒对方基地挂&quot;);
+    b.setBounds(50, 50, 280, 30);
+
+    f.add(b);
+    f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+    f.setVisible(true);
+}</code></pre><h2 id="JDialog"><a href="#JDialog" class="headerlink" title="JDialog"></a>JDialog</h2><p>JDialog也是窗体型容器，右上角没有最大和最小化按钮</p>
+<p><img src="https://stepimagewm.how2j.cn/888.png" alt="avatar"></p>
+<pre><code>public static void main(String[] args) { 
+    //普通的窗体，带最大和最小化按钮，而对话框却不带
+    JDialog d = new JDialog();
+    d.setTitle(&quot;LOL&quot;);
+    d.setSize(400, 300);
+    d.setLocation(200, 200);
+    d.setLayout(null);
+    JButton b = new JButton(&quot;一键秒对方基地挂&quot;);
+    b.setBounds(50, 50, 280, 30);
+
+    d.add(b);
+
+    d.setVisible(true);
+}</code></pre><h2 id="模态JDialog"><a href="#模态JDialog" class="headerlink" title="模态JDialog"></a>模态JDialog</h2><p>当一个对话框被设置为模态的时候，其背后的父窗体，是不能被激活的，除非该对话框被关闭<br><img src="https://wx2.sinaimg.cn/mw690/c2af83c2ly1ggs4fa7mbxj20m80go0sv.jpg" alt="avatar"></p>
+<details><summary>ModalJdialog.java</summary>
+
+<pre><code>    public static void main(String[] args) {
+    JFrame f = new JFrame(&quot;外部窗体&quot;);
+    f.setSize(800, 600);
+    f.setLocation(100, 100);
+
+    // 根据外部窗体实例化JDialog
+    JDialog d = new JDialog(f);
+    // 设置为模态
+    d.setModal(true);
+
+    d.setTitle(&quot;模态的对话框&quot;);
+    d.setSize(400, 300);
+    d.setLocation(200, 200);
+    d.setLayout(null);
+    JButton b = new JButton(&quot;一键秒对方基地挂&quot;);
+    b.setBounds(50, 50, 280, 30);
+    d.add(b);
+
+    f.setVisible(true);
+    d.setVisible(true);
+}</code></pre></details>
+
+<h2 id="窗体大小不可变化"><a href="#窗体大小不可变化" class="headerlink" title="窗体大小不可变化"></a>窗体大小不可变化</h2><p>通过调用方法 <font color='orange'>setResizable(false)</font>做到窗体大小不可变化</p>
+<pre><code>f.add(b);
+// 窗体大小不可变化
+f.setResizable(false);
+f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+f.setVisible(true);</code></pre><h1 id="SWING五种常见的布局器"><a href="#SWING五种常见的布局器" class="headerlink" title="SWING五种常见的布局器"></a>SWING五种常见的布局器</h1><p>布局器是用在容器上的。用来决定容器上的组件摆放的位置和大小.</p>
+<h2 id="绝对定位"><a href="#绝对定位" class="headerlink" title="绝对定位"></a>绝对定位</h2><p>绝对定位就是指不使用布局器，组件的位置和大小需要单独指定</p>
+<pre><code>JFrame f = new JFrame(&quot;LoL&quot;);
+f.setSize(400, 300);
+f.setLocation(200, 200);
+
+// 设置布局器为null，即进行绝对定位，容器上的组件都需要指定位置和大小
+f.setLayout(null);
+JButton b1 = new JButton(&quot;英雄1&quot;);
+// 指定位置和大小
+b1.setBounds(50, 50, 80, 30);
+
+// 没有指定位置和大小，不会出现在容器上
+JButton b4 = new JButton(&quot;英雄3&quot;);
+
+f.add(b1);
+// b4没有指定位置和大小，不会出现在容器上
+f.add(b4);</code></pre><h2 id="FlowLayout"><a href="#FlowLayout" class="headerlink" title="FlowLayout"></a>FlowLayout</h2><p>设置布局器为<font color='orange'>FlowLayout</font>顺序布局器,容器上的组件水平摆放,加入到容器即可，无需单独指定大小和位置</p>
+<pre><code>f.setLayout(new FlowLayout());</code></pre><h2 id="BorderLayout"><a href="#BorderLayout" class="headerlink" title="BorderLayout"></a>BorderLayout</h2><p>设置布局器为<font color='orange'>BorderLayout</font>容器上的组件按照上北 下南 左西 右东 中的顺序摆放</p>
+<pre><code>f.setLayout(new BorderLayout());
+
+JButton b1 = new JButton(&quot;洪七&quot;);
+JButton b2 = new JButton(&quot;段智兴&quot;);
+JButton b3 = new JButton(&quot;欧阳锋&quot;);
+JButton b4 = new JButton(&quot;黄药师&quot;);
+JButton b5 = new JButton(&quot;周伯通&quot;);
+
+// 加入到容器的时候，需要指定位置
+f.add(b1, BorderLayout.NORTH);
+f.add(b2, BorderLayout.SOUTH);
+f.add(b3, BorderLayout.WEST);
+f.add(b4, BorderLayout.EAST);
+f.add(b5, BorderLayout.CENTER);</code></pre><h2 id="GridLayout"><a href="#GridLayout" class="headerlink" title="GridLayout"></a>GridLayout</h2><p>GridLayout，即网格布局器<br><img src="https://stepimagewm.how2j.cn/892.png" alt="avatar"></p>
+<pre><code>// 该GridLayerout的构造方法表示该网格是2行3列
+f.setLayout(new GridLayout(2, 3));
+
+JButton b1 = new JButton(&quot;洪七&quot;);
+JButton b2 = new JButton(&quot;段智兴&quot;);
+JButton b3 = new JButton(&quot;欧阳锋&quot;);
+JButton b4 = new JButton(&quot;黄药师&quot;);
+JButton b5 = new JButton(&quot;周伯通&quot;);
+
+f.add(b1);
+f.add(b2);
+f.add(b3);
+f.add(b4);
+f.add(b5);</code></pre><h2 id="setPreferredSize"><a href="#setPreferredSize" class="headerlink" title="setPreferredSize"></a>setPreferredSize</h2><p>即便 使用 布局器 ，也可以 通过setPreferredSize，向布局器建议该组件显示的大小.<br>注 只对部分布局器起作用，比如FlowLayout可以起作用。 比如GridLayout就不起作用，因为网格布局器必须对齐</p>
+<p><img src="https://stepimagewm.how2j.cn/919.png" alt="avatar"></p>
+<pre><code>f.setLayout(new FlowLayout());
+
+JButton b1 = new JButton(&quot;英雄1&quot;);
+JButton b2 = new JButton(&quot;英雄2&quot;);
+JButton b3 = new JButton(&quot;英雄3&quot;);
+
+// 即便 使用 布局器 ，也可以 通过setPreferredSize，向布局器建议该组件显示的大小
+b3.setPreferredSize(new Dimension(180, 40));
+
+f.add(b1);
+f.add(b2);
+f.add(b3);</code></pre><h2 id="CardLayout"><a href="#CardLayout" class="headerlink" title="CardLayout"></a>CardLayout</h2><p><img src="https://stepimagewm.how2j.cn/2734.png" alt="avatar"></p>
+<h1 id="SWING-中的组件列表"><a href="#SWING-中的组件列表" class="headerlink" title="SWING 中的组件列表"></a>SWING 中的组件列表</h1><h2 id="标签"><a href="#标签" class="headerlink" title="标签"></a>标签</h2><p>Label用于显示文字</p>
+<pre><code>JLabel l = new JLabel(&quot;LOL文字&quot;);
+//文字颜色
+l.setForeground(Color.red);
+l.setBounds(50, 50, 280, 30);</code></pre><h2 id="使用JLabel显示图片"><a href="#使用JLabel显示图片" class="headerlink" title="使用JLabel显示图片"></a>使用JLabel显示图片</h2><p>java GUI 显示图片是通过在label上设置图标实现的<br>注： 这里的图片路径是e:/project/j2se/shana.png，所以要确保这里有图片，不然不会显示<br>注： 图片的后缀名和真实格式，必须保持一致，否则很有可能无法正常显示。 什么意思呢？就是文件本来是jpg的，但是仅仅是把后缀名修改成了png,那么会导致显示失败。</p>
+<pre><code>JLabel l = new JLabel();
+//根据图片创建ImageIcon对象
+ImageIcon i = new ImageIcon(&quot;e:/project/j2se/shana.png&quot;);
+//设置ImageIcon
+l.setIcon(i);
+//label的大小设置为ImageIcon,否则显示不完整
+l.setBounds(50, 50, i.getIconWidth(), i.getIconHeight());</code></pre><h2 id="按钮"><a href="#按钮" class="headerlink" title="按钮"></a>按钮</h2><p>JButton 普通按钮</p>
+<pre><code>JButton b = new JButton(&quot;一键秒对方基地挂&quot;);
+b.setBounds(50, 50, 280, 30);</code></pre><h2 id="复选框"><a href="#复选框" class="headerlink" title="复选框"></a>复选框</h2><p>JCheckBox 复选框,使用isSelected来获取是否选中了</p>
+<pre><code>JCheckBox bCheckBox = new JCheckBox(&quot;物理英雄&quot;);
+//设置 为 默认被选中
+bCheckBox.setSelected(true);
+bCheckBox.setBounds(50, 50, 130, 30);
+JCheckBox bCheckBox2 = new JCheckBox(&quot;魔法 英雄&quot;);
+bCheckBox2.setBounds(50, 100, 130, 30);
+//判断 是否 被 选中
+System.out.println(bCheckBox2.isSelected());
+f.add(bCheckBox);
+f.add(bCheckBox2);</code></pre><h2 id="单选框"><a href="#单选框" class="headerlink" title="单选框"></a>单选框</h2><p>JRadioButton 单选框,使用isSelected来获取是否选中了</p>
+<p>在这个例子里，两个单选框可以被同时选中，为了实现只能选中一个，还需要用到ButtonGroup</p>
+<pre><code>JRadioButton b1 = new JRadioButton(&quot;物理英雄&quot;);
+// 设置 为 默认被选中
+b1.setSelected(true);
+b1.setBounds(50, 50, 130, 30);
+JRadioButton b2 = new JRadioButton(&quot;魔法 英雄&quot;);
+b2.setBounds(50, 100, 130, 30);
+System.out.println(b2.isSelected());
+
+f.add(b1);
+f.add(b2);</code></pre><h2 id="按钮组"><a href="#按钮组" class="headerlink" title="按钮组"></a>按钮组</h2><p><font color='orange'>ButtonGroup</font>对按钮进行分组，把不同的按钮，放在同一个分组里 ，同一时间，只有一个 按钮 会被选中</p>
+<pre><code>JRadioButton b1 = new JRadioButton(&quot;物理英雄&quot;);
+b1.setSelected(true);
+b1.setBounds(50, 50, 130, 30);
+JRadioButton b2 = new JRadioButton(&quot;魔法 英雄&quot;);
+b2.setBounds(50, 100, 130, 30);
+
+// 按钮分组
+ButtonGroup bg = new ButtonGroup();
+// 把b1，b2放在 同一个 按钮分组对象里 ，这样同一时间，只有一个 按钮 会被选中
+bg.add(b1);
+bg.add(b2);
+
+f.add(b1);
+f.add(b2);</code></pre><h2 id="下拉框"><a href="#下拉框" class="headerlink" title="下拉框"></a>下拉框</h2><p>JComboBox 下拉框<br>使用getSelectedItem来获取被选中项<br>使用setSelectedItem() 来指定要选中项</p>
+<pre><code>//下拉框出现的条目
+String[] heros = new String[] { &quot;卡特琳娜&quot;, &quot;库奇&quot; };
+JComboBox cb = new JComboBox(heros);
+
+cb.setBounds(50, 50, 80, 30);
+
+f.add(cb);</code></pre><h2 id="对话框"><a href="#对话框" class="headerlink" title="对话框"></a>对话框</h2><p>JOptionPane 用于弹出对话框</p>
+<p>JOptionPane.showConfirmDialog(f, “是否 使用外挂 ？”);表示询问，第一个参数是该对话框以哪个组件对齐<br>JOptionPane.showInputDialog(f, “请输入yes，表明使用外挂后果自负”);接受用户的输入<br>JOptionPane.showMessageDialog(f, “你使用外挂被抓住！ 罚拣肥皂3次！”);显示消息</p>
+<pre><code>int option = JOptionPane.showConfirmDialog(f, &quot;是否 使用外挂 ？&quot;);
+if (JOptionPane.OK_OPTION == option) {
+    String answer = JOptionPane.showInputDialog(f, &quot;请输入yes，表明使用外挂后果自负&quot;);
+    if (&quot;yes&quot;.equals(answer))
+        JOptionPane.showMessageDialog(f, &quot;你使用外挂被抓住！ 罚拣肥皂3次！&quot;);
+}</code></pre><h2 id="文本框"><a href="#文本框" class="headerlink" title="文本框"></a>文本框</h2><p>JTextField 输入框<br>setText 设置文本<br>getText 获取文本<br>JTextField 是单行文本框，如果要输入多行数据，请使用JTextArea  </p>
+<p>tfPassword.grabFocus(); 表示让密码输入框获取焦点</p>
+<pre><code>f.setLayout(new FlowLayout());
+
+JLabel lName = new JLabel(&quot;账号：&quot;);
+// 输入框
+JTextField tfName = new JTextField(&quot;&quot;);
+tfName.setText(&quot;请输入账号&quot;);
+tfName.setPreferredSize(new Dimension(80, 30));
+
+JLabel lPassword = new JLabel(&quot;密码：&quot;);
+// 输入框
+JTextField tfPassword = new JTextField(&quot;&quot;);
+tfPassword.setText(&quot;请输入密码&quot;);
+tfPassword.setPreferredSize(new Dimension(80, 30));
+
+f.add(lName);
+f.add(tfName);
+f.add(lPassword);
+f.add(tfPassword);
+
+f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+f.setVisible(true);
+tfPassword.grabFocus();</code></pre><h2 id="密码框"><a href="#密码框" class="headerlink" title="密码框"></a>密码框</h2><p>JPasswordField 密码框<br>与文本框不同，获取密码框里的内容，推荐使用getPassword，该方法会返回一个字符数组，而非字符串</p>
+<pre><code>f.setLayout(new FlowLayout());
+JLabel l = new JLabel(&quot;密码：&quot;);
+// 密码框
+JPasswordField pf = new JPasswordField(&quot;&quot;);
+pf.setText(&quot;&amp;48kdh4@#&quot;);
+pf.setPreferredSize(new Dimension(80, 30));
+
+// 与文本框不同，获取密码框里的内容，推荐使用getPassword，该方法会返回一个字符数组，而非字符串
+char[] password = pf.getPassword();
+String p = String.valueOf(password);
+System.out.println(p);
+
+f.add(l);
+f.add(pf);</code></pre><h2 id="文本域"><a href="#文本域" class="headerlink" title="文本域"></a>文本域</h2><p>JTextArea：文本域。和文本框JTextField不同的是，文本域可以输入多行数据<br>如果要给文本域初始文本，通过\n来实现换行效果<br>JTextArea通常会用到append来进行数据追加,如果文本太长，会跑出去，可以通过setLineWrap(true) 来做到自动换行</p>
+<pre><code>f.setLayout(new FlowLayout());
+
+JLabel l = new JLabel(&quot;文本域：&quot;);
+JTextArea ta = new JTextArea();
+ta.setPreferredSize(new Dimension(200, 150));
+//\n换行符
+ta.setText(&quot;抢人头！\n抢你妹啊抢！\n&quot;);
+//追加数据
+ta.append(&quot;我去送了了了了了了了了了了了了了了了了了了了了了了了了&quot;);
+//设置自动换行
+ta.setLineWrap(true);
+
+f.add(l);
+f.add(ta);</code></pre><h2 id="进度条"><a href="#进度条" class="headerlink" title="进度条"></a>进度条</h2><p><img src="https://stepimagewm.how2j.cn/2703.png" alt="avatar"></p>
+<pre><code>f.setLayout(new FlowLayout());
+JProgressBar pb = new JProgressBar();
+//进度条最大100
+pb.setMaximum(100);
+//当前进度是50
+pb.setValue(50);
+//显示当前进度
+pb.setStringPainted(true);
+
+f.add(pb);</code></pre><h2 id="文件选择器"><a href="#文件选择器" class="headerlink" title="文件选择器"></a>文件选择器</h2><p>JFileChooser 表示文件选择器,使用FileFilter用于仅选择.txt文件  </p>
+<p>fc.showOpenDialog(); 用于打开文件<br>fc.showSaveDialog(); 用于保存文件</p>
+<pre><code>f.setLayout(new FlowLayout());
+JFileChooser fc = new JFileChooser();
+fc.setFileFilter(new FileFilter() {
+    @Override
+    public String getDescription() {
+        // TODO Auto-generated method stub
+        return &quot;.txt&quot;;
+    } 
+    @Override
+    public boolean accept(File f) {
+        return f.getName().toLowerCase().endsWith(&quot;.txt&quot;);
+    }
+});
+JButton bOpen = new JButton(&quot;打开文件&quot;);
+JButton bSave = new JButton(&quot;保存文件&quot;);
+f.add(bOpen);
+f.add(bSave);
+f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+f.setSize(250, 150);
+f.setLocationRelativeTo(null);
+f.setVisible(true);
+bOpen.addActionListener(new ActionListener() { 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+         int returnVal =  fc.showOpenDialog(f);
+         File file = fc.getSelectedFile();
+         if (returnVal == JFileChooser.APPROVE_OPTION) {
+             JOptionPane.showMessageDialog(f, &quot;计划打开文件:&quot; + file.getAbsolutePath());
+         }
+
+    }
+});
+bSave.addActionListener(new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        int returnVal =  fc.showSaveDialog(f);
+        File file = fc.getSelectedFile();
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            JOptionPane.showMessageDialog(f, &quot;计划保存到文件:&quot; + file.getAbsolutePath());
+        }
+    }
+});</code></pre><h1 id="SWING-四种常见面板"><a href="#SWING-四种常见面板" class="headerlink" title="SWING 四种常见面板"></a>SWING 四种常见面板</h1><h2 id="基本面板"><a href="#基本面板" class="headerlink" title="基本面板"></a>基本面板</h2><p>JPanel即为基本面板<br>面板和JFrame一样都是容器，不过面板一般用来充当中间容器，把组件放在面板上，然后再把面板放在窗体上。<br>一旦移动一个面板，其上面的组件，就会全部统一跟着移动，采用这种方式，便于进行整体界面的设计</p>
+<p><img src="https://stepimagewm.how2j.cn/893.png" alt="avatar"></p>
+<pre><code>JPanel p1 = new JPanel();
+// 设置面板大小
+p1.setBounds(50, 50, 300, 60);
+// 设置面板背景颜色
+p1.setBackground(Color.RED);
+// 这一句可以没有，因为JPanel默认就是采用的FlowLayout
+p1.setLayout(new FlowLayout());
+JButton b1 = new JButton(&quot;英雄1&quot;);
+JButton b2 = new JButton(&quot;英雄2&quot;);
+JButton b3 = new JButton(&quot;英雄3&quot;);
+
+// 把按钮加入面板
+p1.add(b1);
+p1.add(b2);
+p1.add(b3);</code></pre><h2 id="ContentPane"><a href="#ContentPane" class="headerlink" title="ContentPane"></a>ContentPane</h2><p>JFrame上有一层面板，叫做ContentPane<br>平时通过f.add()向JFrame增加组件，其实是向JFrame上的 ContentPane加东西</p>
+<pre><code>JButton b = new JButton(&quot;一键秒对方基地挂&quot;);
+b.setBounds(50, 50, 280, 30);
+
+f.add(b);
+// JFrame上有一层面板，叫做ContentPane
+// 平时通过f.add()向JFrame增加组件，其实是向JFrame上的 ContentPane加东西
+// f.add等同于f.getContentPane().add(b);
+f.getContentPane().add(b);
+
+// b.getParent()获取按钮b所处于的容器
+// 打印出来可以看到，实际上是ContentPane而非JFrame
+System.out.println(b.getParent());</code></pre><h2 id="SplitPanel"><a href="#SplitPanel" class="headerlink" title="SplitPanel"></a>SplitPanel</h2><p>创建一个水平JSplitPane，左边是pLeft,右边是pRight</p>
+<pre><code>// 创建一个水平JSplitPane，左边是p1,右边是p2
+JSplitPane sp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, pLeft, pRight);
+// 设置分割条的位置
+sp.setDividerLocation(80);
+
+// 把sp当作ContentPane
+f.setContentPane(sp);</code></pre><h2 id="JScrollPanel"><a href="#JScrollPanel" class="headerlink" title="JScrollPanel"></a>JScrollPanel</h2><p>使用带滚动条的面板有两种方式<br>1.在创建JScrollPane，把组件作为参数传进去 </p>
+<pre><code>JScrollPane sp = new JScrollPane(ta);</code></pre><p>2.希望带滚动条的面板显示其他组件的时候，调用setViewportView</p>
+<pre><code>sp.setViewportView(ta);</code></pre><p><img src="https://stepimagewm.how2j.cn/2721.png" alt="avatar"></p>
+<pre><code>//准备一个文本域，在里面放很多数据
+JTextArea ta = new JTextArea();
+for (int i = 0; i &lt; 1000; i++) {
+    ta.append(String.valueOf(i));
+}
+//自动换行
+ta.setLineWrap(true);
+JScrollPane sp = new JScrollPane(ta);
+
+f.setContentPane(sp);</code></pre><h2 id="TabbedPanel"><a href="#TabbedPanel" class="headerlink" title="TabbedPanel"></a>TabbedPanel</h2><p><img src="https://stepimagewm.how2j.cn/896.png" alt="avatar"></p>
+<pre><code>JTabbedPane tp = new JTabbedPane();
+tp.add(p1);
+tp.add(p2);
+
+// 设置tab的标题
+tp.setTitleAt(0, &quot;红色tab&quot;);
+tp.setTitleAt(1, &quot;蓝色tab&quot;);
+
+ImageIcon i = new ImageIcon(&quot;D:/Github/North-Box/B.png&quot;);
+tp.setIconAt(0,i );
+tp.setIconAt(1,i );
+
+f.setContentPane(tp);</code></pre><h2 id="CardLayerout"><a href="#CardLayerout" class="headerlink" title="CardLayerout"></a>CardLayerout</h2><p>CardLayerout 布局器 很像TabbedPanel ，在本例里面上面是一个下拉框，下面是一个CardLayerout 的JPanel<br>这个JPanel里有两个面板，可以通过CardLayerout方便的切换<br><img src="https://stepimagewm.how2j.cn/2735.png" alt="avatar"></p>
+<h1 id="如何在SWING中使用菜单JMENU"><a href="#如何在SWING中使用菜单JMENU" class="headerlink" title="如何在SWING中使用菜单JMENU"></a>如何在SWING中使用菜单JMENU</h1><h2 id="菜单栏和菜单"><a href="#菜单栏和菜单" class="headerlink" title="菜单栏和菜单"></a>菜单栏和菜单</h2><p><img src="https://stepimagewm.how2j.cn/897.png" alt="avatar"></p>
+<pre><code>// 菜单栏
+JMenuBar mb = new JMenuBar();
+// 菜单
+JMenu mHero = new JMenu(&quot;英雄&quot;);
+JMenu mItem = new JMenu(&quot;道具&quot;);
+// 把菜单加入到菜单栏
+mb.add(mHero);
+mb.add(mItem);
+// 把菜单栏加入到frame，这里用的是set而非add
+f.setJMenuBar(mb);</code></pre><h2 id="菜单项"><a href="#菜单项" class="headerlink" title="菜单项"></a>菜单项</h2><p><img src="https://stepimagewm.how2j.cn/898.png" alt="avatar"></p>
+<pre><code>JMenuBar mb = new JMenuBar();
+
+JMenu mHero = new JMenu(&quot;英雄&quot;);
+JMenu mItem = new JMenu(&quot;道具&quot;);
+// 菜单项
+mHero.add(new JMenuItem(&quot;近战-Warriar&quot;));
+mHero.add(new JMenuItem(&quot;远程-Range&quot;));
+// 分隔符
+mHero.addSeparator();
+mHero.add(new JMenuItem(&quot;所有-All&quot;));
+mb.add(mHero);
+mb.add(mItem);
+
+f.setJMenuBar(mb);</code></pre><h1 id="SWING如何使用工具栏JTOOLBAR"><a href="#SWING如何使用工具栏JTOOLBAR" class="headerlink" title="SWING如何使用工具栏JTOOLBAR"></a>SWING如何使用工具栏JTOOLBAR</h1><h2 id="工具栏"><a href="#工具栏" class="headerlink" title="工具栏"></a>工具栏</h2><pre><code>    // 菜单
+    addMenu(f);
+    // 工具栏
+    JToolBar tb = new JToolBar();
+    // 为工具栏增加按钮
+    JButton b1 = new JButton(new ImageIcon(&quot;D:\\Github\\North-Box\\B.PNG&quot;));
+    JButton b2 = new JButton(new ImageIcon(&quot;D:\\Github\\North-Box\\C.PNG&quot;));
+    tb.add(b1);
+    tb.add(b2);
+
+    // 把工具栏放在north的位置
+    f.setLayout(new BorderLayout());
+    f.add(tb, BorderLayout.NORTH);
+
+    f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    f.setVisible(true);
+}</code></pre><h2 id="给按钮设置提示信息"><a href="#给按钮设置提示信息" class="headerlink" title="给按钮设置提示信息"></a>给按钮设置提示信息</h2><p>当鼠标放在按钮上的时候会出现提示</p>
+<pre><code>// 给按钮设置提示信息
+b1.setToolTipText(&quot;坑爹英雄&quot;);</code></pre><h2 id="禁止工具栏拖动"><a href="#禁止工具栏拖动" class="headerlink" title="禁止工具栏拖动"></a>禁止工具栏拖动</h2><p>默认情况下 工具栏可以通过鼠标拖动</p>
+<pre><code>//可以禁止鼠标拖动功能
+setFloatable(false);</code></pre><h1 id="SWING-使用-JTABLE详解"><a href="#SWING-使用-JTABLE详解" class="headerlink" title="SWING 使用 JTABLE详解"></a>SWING 使用 JTABLE详解</h1><h2 id="基本表格"><a href="#基本表格" class="headerlink" title="基本表格"></a>基本表格</h2><p>显示一个Table需要两组数据</p>
+<ol>
+<li>一维数组： String[]columnNames 表示表格的标题</li>
+<li>二维数组： String[][] heros 表格中的内容  </li>
+</ol>
+<p>默认情况下，表格的标题是不会显示出来了，除非使用了JScrollPane<br><img src="https://stepimagewm.how2j.cn/899.png" alt="avatar"></p>
+<pre><code>f.setLayout(new BorderLayout());
+
+// 表格上的title
+String[] columnNames = new String[] { &quot;id&quot;, &quot;name&quot;, &quot;hp&quot;, &quot;damage&quot; };
+// 表格中的内容，是一个二维数组
+String[][] heros = new String[][] { { &quot;1&quot;, &quot;盖伦&quot;, &quot;616&quot;, &quot;100&quot; },
+        { &quot;2&quot;, &quot;提莫&quot;, &quot;512&quot;, &quot;102&quot; }, { &quot;3&quot;, &quot;奎因&quot;, &quot;832&quot;, &quot;200&quot; } };
+JTable t = new JTable(heros, columnNames);
+f.add(t, BorderLayout.CENTER);</code></pre><h2 id="JScrollPane"><a href="#JScrollPane" class="headerlink" title="JScrollPane"></a>JScrollPane</h2><p>JScrollPane: 带滚动条的Panel,把table放进去就可以看到table的title<br>同样的把textarea放进去，并且textarea内容够长的话，就会看到滚动条<br><img src="https://stepimagewm.how2j.cn/902.png" alt="avatar"></p>
+<pre><code>f.setLayout(new BorderLayout());
+
+String[] columnNames = new String[] { &quot;id&quot;, &quot;name&quot;, &quot;hp&quot;, &quot;damage&quot; };
+String[][] heros = new String[][] { { &quot;1&quot;, &quot;盖伦&quot;, &quot;616&quot;, &quot;100&quot; },{ &quot;2&quot;, &quot;提莫&quot;, &quot;512&quot;, &quot;102&quot; }, { &quot;3&quot;, &quot;奎因&quot;, &quot;832&quot;, &quot;200&quot; } };
+JTable t = new JTable(heros, columnNames);
+
+// 根据t创建 JScrollPane
+JScrollPane sp = new JScrollPane(t);
+
+//或则创建一个空的JScrollPane，再通过setViewportView把table放在JScrollPane中
+// JScrollPane sp = new JScrollPane(t);
+// sp.setViewportView(t);
+
+// 把sp而非JTable加入到JFrame上，
+f.add(sp, BorderLayout.CENTER);</code></pre><h2 id="列宽"><a href="#列宽" class="headerlink" title="列宽"></a>列宽</h2><pre><code>// 设置列宽度
+t.getColumnModel().getColumn(0).setPreferredWidth(10);</code></pre><h2 id="TableModel"><a href="#TableModel" class="headerlink" title="TableModel"></a>TableModel</h2><p>首先说下TableModel的设计思想，在Model这种思想的指导下，数据和显示分离开来了。 比如对于JTable而言，有数据部分，也有显示部分(比如列宽等信息)。 数据部分，专门做一个类，叫做TableModel，就用于存放要显示的数据。</p>
+<p>使用TableModel的方式存放Table需要显示的数据<br>HeroTableModel 继承AbstractTableModel ，进而实现了接口TableModel<br>在HeroTableModel 中提供一个table显示需要的所有信息</p>
+<ol>
+<li>getRowCount 返回一共有多少行</li>
+<li>getColumnCount 返回一共有多少列</li>
+<li>getColumnName 每一列的名字</li>
+<li>isCellEditable 单元格是否可以修改</li>
+<li>getValueAt 每一个单元格里的值</li>
+</ol>
+<p>当图形界面需要渲染第一个单元格的数据的时候，就会调用方法TabelModel的getValueAt(0,0) ，把返回值拿到并显示</p>
+<h2 id="TableModel-与DAO结合"><a href="#TableModel-与DAO结合" class="headerlink" title="TableModel 与DAO结合"></a>TableModel 与DAO结合</h2><p><img src="https://wx1.sinaimg.cn/mw690/c2af83c2ly1ggtzffkpy6j20b408cjr9.jpg" alt="avatar"></p>
+<p>通过TableModel与DAO结合显示数据库中Hero信息。<br>DAO使用HeroDAO,在TableModel中，使用从DAO返回的List作为TableModel的数据</p>
+<p>只需要修改HeroTableModel，无需修改TestGUI。 这正好演绎了Model设计思想中的数据分离的好处，当只需要数据发生变化的时候，修改Model即可，界面GUI部分，不需要做任何改动</p>
+<blockquote>
+<p>Charactor.HeroJDBC<br>JDBC.HeroDAO<br>GUI.HeroTableModel<br>GUI.TableModelTest</p>
+</blockquote>
+<h2 id="TableSelectionModel"><a href="#TableSelectionModel" class="headerlink" title="TableSelectionModel"></a>TableSelectionModel</h2><p>通过table可以获取一个 TableSelectionModel，专门用于监听jtable选中项的变化<br><img src="https://stepimagewm.how2j.cn/901.png" alt="avatar"></p>
+<blockquote>
+<p>charactor.HeroJDBC<br>GUI.TableSectionModel</p>
+</blockquote>
+<h2 id="更新Table"><a href="#更新Table" class="headerlink" title="更新Table"></a>更新Table</h2><p>以新增数据到数据库中，然后更新Table为例</p>
+<blockquote>
+<p>JDBC.HeroDAO<br>charactor.HeroJDBC<br>GUI.HeroTableModel<br>GUI.TableUpdate</p>
+</blockquote>
+<h2 id="输入项验证"><a href="#输入项验证" class="headerlink" title="输入项验证"></a>输入项验证</h2><p>如果用户输入的名称为空，或者血量不是小数，在提交数据的时候都会报错。所以需要加上输入项的验证，如果输入的数据不合格，应该弹出对话框提示用户具体原因。<br><img src="https://stepimagewm.how2j.cn/932.png" alt="avatar"></p>
+<blockquote>
+<p>JDBC.HeroDAO<br>charactor.HeroJDBC<br>GUI.HeroTableModel<br>GUI.TableVerification</p>
+</blockquote>
+<h2 id="选中指定行"><a href="#选中指定行" class="headerlink" title="选中指定行"></a>选中指定行</h2><ol>
+<li>table初始化后，应该默认选中第一行</li>
+<li>增加数据后，也应该选中新增的这一条<br><img src="https://stepimagewm.how2j.cn/933.png" alt="avatar"><blockquote>
+<p>JDBC.HeroDAO<br>charactor.HeroJDBC<br>GUI.HeroTableModel<br>GUI.TableDesignatedRow</p>
+</blockquote>
+</li>
+</ol>
+<h1 id="两种SWING下的日期控件-DATEPICKER-和JXDATEPICKER"><a href="#两种SWING下的日期控件-DATEPICKER-和JXDATEPICKER" class="headerlink" title="两种SWING下的日期控件 DATEPICKER 和JXDATEPICKER"></a>两种SWING下的日期控件 DATEPICKER 和JXDATEPICKER</h1><p>swing没有自带的日期控件，需要第三方的类,jar包可以在右侧下载</p>
+<h2 id="DatePicker"><a href="#DatePicker" class="headerlink" title="DatePicker"></a>DatePicker</h2><p>本例使用 datepicker.jar 包，有一个缺点，不能设置时间，只能在创建控件的时候传入指定日期。<br>需要设置日期，请使用JXDatePicker<br><img src="https://stepimagewm.how2j.cn/943.png" alt="avatar"></p>
+<h1 id="SWING中的线程"><a href="#SWING中的线程" class="headerlink" title="SWING中的线程"></a>SWING中的线程</h1><h2 id="三种线程"><a href="#三种线程" class="headerlink" title="三种线程"></a>三种线程</h2><p>在Swing程序的开发中，需要建立3种线程的概念</p>
+<ol>
+<li><p>初始化线程<br>初始化线程用于创建各种容器，组件并显示他们，一旦创建并显示，初始化线程的任务就结束了。</p>
+</li>
+<li><p>事件调度线程<br>通过事件监听的学习，我们了解到Swing是一个事件驱动的模型，所有和事件相关的操作都放是放在事件调度线程 (Event Dispatch)中进行的。比如点击一个按钮，对应的ActionListener.actionPerformed 方法中的代码，就是在事件调度线程 Event Dispatch Thread中执行的。</p>
+</li>
+<li><p>长耗时任务线程<br>有时候需要进行一些长时间的操作，比如访问数据库，文件复制，连接网络，统计文件总数等等。 这些操作就不适合放在事件调度线程中进行，因为占用时间久了，会让使用者感觉界面响应很卡顿。 为了保持界面响应的流畅性,所有长耗时任务都应该放在专门的 长耗时任务线程中进行</p>
+</li>
+</ol>
+<h2 id="事件调度线程是单线程的"><a href="#事件调度线程是单线程的" class="headerlink" title="事件调度线程是单线程的"></a>事件调度线程是单线程的</h2><p>在开始讲解这3种线程之前， 要建立一个概念： 事件调度线程是单线程的。<br>为什么呢？</p>
+<p>这是因为 Swing里面的各种组件类，比如JTextField,JButton 都不是线程安全的，这就意味着，如果有多个线程，那么同一个JTextField的setText方法，可能会被多个线程同时调用，这会导致同步问题以及错误数据的发生。</p>
+<p>如果把组件类设计成为线程安全的，由于Swing事件调度的复杂性，就很有可能导致死锁的发生。</p>
+<p>为了规避同步问题，以及降低整个Swing设计的复杂度，提高Swing的相应速度，Swing中的 事件调度线程被设计成为了单线程模式，即只有一个线程在负责事件的响应工作。</p>
+<h2 id="初始化线程"><a href="#初始化线程" class="headerlink" title="初始化线程"></a>初始化线程</h2><p>如代码所示，同时我们在初始化一个图形界面的时候，都会直接在主方法的主线程里，直接调用如下代码来进行初始化</p>
+<pre><code>new TestFrame().setVisible(true);</code></pre><p>如果是小程序这没有什么问题，如果是复杂的程序就有可能产生问题了。因为这里有两个线程在同时访问组件：1. 主线程 2. 事件调度线程。 如果是复杂的图形界面程序，就有可能出现这两个线程同时操作的情况，导致同步问题的产生。</p>
+<p>为了规避这个问题的产生，创建和显示界面的工作，最好也交给事件调度线程，这样就保证了只有一个线程在访问这些组件</p>
+<pre><code>SwingUtilities.invokeLater(new Runnable() {
+    public void run() {
+        new TestFrame().setVisible(true);
+    }
+});</code></pre><p>像这样，new TestFrame().setVisible(true); 这段代码就是在事件调度线程中执行了。<br>还可以使用SwingUtilities.isEventDispatchThread()来判断当前线程是否是事件调度线程</p>
+<h2 id="事件调度线程"><a href="#事件调度线程" class="headerlink" title="事件调度线程"></a>事件调度线程</h2><p>以 按钮监听 中的代码为例，ActionListener.actionPerformed 中的代码，就是事件调度线程执行的。</p>
+<p>可以借助SwingUtilities.isEventDispatchThread() 确认，是事件调度线程在执行相应的代码</p>
+<blockquote>
+<p>GUI.EventThread</p>
+</blockquote>
+<h2 id="长耗时任务线程"><a href="#长耗时任务线程" class="headerlink" title="长耗时任务线程"></a>长耗时任务线程</h2><p>有时候需要执行长耗时任务，比如数据库查询，文件复制，访问网络等等。</p>
+<p>而这些操作一般都会在事件响应后发起，就会自动进入事件调度线程。 而事件调度线程又是单线程模式，其结果就会是在执行这些长耗时任务的时候，界面就无响应了。<br><img src="https://stepimagewm.how2j.cn/2727.png" alt="avatar"></p>
+<p>如图所示，当点击第一个按钮的时候，会在其中进行一个5秒钟的任务，这个期间，第一个按钮会保持按下状态，其他按钮也无法点击，出现了无响应了状态。</p>
+<p>为了解决这个问题，Swing提供了一个SwingWorker类来解决。 SwingWorker是一个抽象类，为了使用，必须实现方法 doInBackground，在doInBackground中，就可以编写我们的任务，然后执行SwingWorker的execute方法，放在专门的工作线程中去运行。</p>
+<pre><code>SwingWorker worker = new SwingWorker() {
+    protected Object doInBackground() throws Exception {
+        //长耗时任务
+        return null;
+    }
+};
+worker.execute();</code></pre><p>SwingWorker又是如何工作的呢？<br>当SwingWorker执行execute的时候，调用默认有10根线程的线程池，执行doInBackground中的代码，通过如下代码，可以获知执行当前SwingWorder的线程名称</p>
+<pre><code>System.out.println(&quot;执行这个SwingWorder的线程是：&quot; + Thread.currentThread().getName());</code></pre><blockquote>
+<p>GUI.SwingWorkerTest</p>
+</blockquote>
+<h1 id="SWING-皮肤-LOOK-AND-FEEL"><a href="#SWING-皮肤-LOOK-AND-FEEL" class="headerlink" title="SWING 皮肤 LOOK AND FEEL"></a>SWING 皮肤 LOOK AND FEEL</h1><p>设置皮肤只需要提供一句代码,就可以把所有的组件切换成不同的风格。</p>
+<pre><code>javax.swing.UIManager.setLookAndFeel(&quot;com.birosoft.liquid.LiquidLookAndFeel&quot;);</code></pre><p>注： 这句话需要加在最前面，如果已经创建了界面，再加这个有时候不能正常起作用。</p>
+</p>
+      <div class="post-button"><a class="btn" href="/2020/07/15/JAVA-Swing/" rel="noopener"><i class="fa fa-angle-double-right fa-fw"></i>阅读更多</a></div>
+    </div>
+  </div>
+  <div class="lx-entry padding">
+    <div>
+      <h2 class="title"><a href="/2020/07/14/JAVA-JDBC/">JDBC</a></h2>
+      <span class="lx-post-detail"><i class="fa fa-calendar-o"></i> 2020-07-14</span>
+      <p><h1 id="JDBC基础教程"><a href="#JDBC基础教程" class="headerlink" title="JDBC基础教程"></a>JDBC基础教程</h1><h2 id="修改数据库"><a href="#修改数据库" class="headerlink" title="修改数据库"></a>修改数据库</h2><pre><code>Statement s = c.createStatement();
+String sql = &quot;insert into hero values(null,&quot;+&quot;&apos;提莫&apos;&quot;+&quot;,&quot;+313.0f+&quot;,&quot;+50+&quot;)&quot;;
+s.execute(sql);</code></pre><h2 id="关闭数据库"><a href="#关闭数据库" class="headerlink" title="关闭数据库"></a>关闭数据库</h2><p>数据库的连接是有限资源，相关操作结束后，养成关闭数据库的好习惯<br>先关闭Statement<br>后关闭Connection</p>
+<pre><code>finally {
+        // 数据库的连接时有限资源，相关操作结束后，养成关闭数据库的好习惯
+        // 先关闭Statement
+        if (s != null)
+            try {
+                s.close();
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        // 后关闭Connection
+        if (c != null)
+            try {
+                c.close();
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+    }</code></pre><h1 id="CRUD"><a href="#CRUD" class="headerlink" title="CRUD"></a>CRUD</h1><h2 id="增删改"><a href="#增删改" class="headerlink" title="增删改"></a>增删改</h2><pre><code>String insert = &quot;insert into hero values(&apos;1&apos;, &apos;增加一条数据&apos;, 666, 60)&quot;;
+String update = &quot;update hero set name = &apos;更新&apos; where id = 205&quot;;
+String delete = &quot;delete from hero where id = 204&quot;;</code></pre><h2 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h2><pre><code>String sql = &quot;select * from hero&quot;;
+// 执行查询语句，并把结果集返回给ResultSet
+ResultSet rs = s.executeQuery(sql);
+while (rs.next()) {
+    int id = rs.getInt(&quot;id&quot;);// 可以使用字段名
+    String name = rs.getString(2);// 也可以使用字段的顺序
+    float hp = rs.getFloat(&quot;hp&quot;);
+    int damage = rs.getInt(4);
+    System.out.printf(&quot;%d\t%s\t%f\t%d%n&quot;, id, name, hp, damage);
+}
+// 不一定要在这里关闭ReultSet，因为Statement关闭的时候，会自动关闭ResultSet
+// rs.close();</code></pre><h2 id="SQL语句判断账号密码是否正确"><a href="#SQL语句判断账号密码是否正确" class="headerlink" title="SQL语句判断账号密码是否正确"></a>SQL语句判断账号密码是否正确</h2><ol>
+<li><p>创建一个用户表，有字段name,password</p>
+</li>
+<li><p>插入一条数据</p>
+<p> insert into user values(null,’dashen’,’thisispassword’);</p>
+</li>
+<li><p>SQL语句判断账号密码是否正确<br>判断账号密码的正确方式是根据账号和密码到表中去找数据，如果有数据，就表明密码正确了，如果没数据，就表明密码错误。</p>
+<pre><code>String name = &quot;dashen&quot;;
+String password = &quot;thisispassword1&quot;;
+
+String sql = &quot;select * from user where name = &apos;&quot; + name +&quot;&apos; and password = &apos;&quot; + password+&quot;&apos;&quot;;
+
+// 执行查询语句，并把结果集返回给ResultSet
+ResultSet rs = s.executeQuery(sql);
+
+if(rs.next())
+    System.out.println(&quot;账号密码正确&quot;);
+else
+    System.out.println(&quot;账号密码错误&quot;);</code></pre></li>
+</ol>
+<h2 id="获取总数"><a href="#获取总数" class="headerlink" title="获取总数"></a>获取总数</h2><pre><code>String sql = &quot;select count(*) from hero&quot;;
+ResultSet rs = s.executeQuery(sql);
+int total = 0;
+while (rs.next()) {
+    total = rs.getInt(1);
+}
+System.out.println(&quot;表Hero中总共有:&quot; + total+&quot; 条数据&quot;);</code></pre><h1 id="在JDBC中使用预编译STATEMENT-以及它的优点"><a href="#在JDBC中使用预编译STATEMENT-以及它的优点" class="headerlink" title="在JDBC中使用预编译STATEMENT 以及它的优点"></a>在JDBC中使用预编译STATEMENT 以及它的优点</h1><h2 id="使用PreparedStatement"><a href="#使用PreparedStatement" class="headerlink" title="使用PreparedStatement"></a>使用PreparedStatement</h2><p>和 Statement一样，PreparedStatement也是用来执行sql语句的<br>与创建Statement不同的是，需要根据sql语句创建PreparedStatement<br>除此之外，还能够通过设置参数，指定相应的值，而不是Statement那样使用字符串拼接</p>
+<p>注： 这是JAVA里唯二的基1的地方，另一个是查询语句中的ResultSet也是基1的。</p>
+<pre><code>String sql = &quot;insert into hero values(null,?,?,?)&quot;;
+try (Connection c = DriverManager.getConnection(&quot;jdbc:mysql://127.0.0.1:3306/game?characterEncoding=UTF-8&quot;,&quot;root&quot;, &quot;&quot;);
+    PreparedStatement ps = c.prepareStatement(sql);
+) {
+    ps.setString(1, &quot;提莫&quot;);
+    ps.setFloat(2, 313.0f);
+    ps.setInt(3, 50);
+    // 执行
+    ps.execute();
+}</code></pre><h2 id="PreparedStatement的优点"><a href="#PreparedStatement的优点" class="headerlink" title="PreparedStatement的优点"></a>PreparedStatement的优点</h2><h3 id="参数设置"><a href="#参数设置" class="headerlink" title="参数设置"></a>参数设置</h3><p>Statement 需要进行字符串拼接，可读性和维护性比较差</p>
+<pre><code>String sql = &quot;insert into hero values(null,&quot;+&quot;&apos;提莫&apos;&quot;+&quot;,&quot;+313.0f+&quot;,&quot;+50+&quot;)&quot;;</code></pre><p>PreparedStatement 使用参数设置，可读性好，不易犯错</p>
+<pre><code>String sql = &quot;insert into hero values(null,?,?,?)&quot;;</code></pre><h3 id="性能表现"><a href="#性能表现" class="headerlink" title="性能表现"></a>性能表现</h3><p>PreparedStatement有预编译机制，性能比Statement更快</p>
+<pre><code>// Statement执行10次，需要10次把SQL语句传输到数据库端
+// 数据库要对每一次来的SQL语句进行编译处理
+for (int i = 0; i &lt; 10; i++) {
+    String sql0 = &quot;insert into hero values(null,&quot; + &quot;&apos;提莫&apos;&quot; + &quot;,&quot;
+            + 313.0f + &quot;,&quot; + 50 + &quot;)&quot;;
+    s.execute(sql0);
+}
+s.close();
+
+// PreparedStatement 执行10次，只需要1次把SQL语句传输到数据库端，数据库对带?的SQL进行预编译
+// 每次执行，只需要传输参数到数据库端
+// 1. 网络传输量比Statement更小
+// 2. 数据库不需要再进行编译，响应更快
+for (int i = 0; i &lt; 10; i++) {
+    ps.setString(1, &quot;提莫&quot;);
+    ps.setFloat(2, 313.0f);
+    ps.setInt(3, 50);
+    ps.execute();
+}</code></pre><h3 id="防止SQL注入式攻击"><a href="#防止SQL注入式攻击" class="headerlink" title="防止SQL注入式攻击"></a>防止SQL注入式攻击</h3><pre><code>// 假设name是用户提交来的数据
+String name = &quot;&apos;盖伦&apos; OR 1=1&quot;;
+String sql0 = &quot;select * from hero where name = &quot; + name;
+// 拼接出来的SQL语句就是
+// select * from hero where name = &apos;盖伦&apos; OR 1=1
+// 因为有OR 1=1，所以恒成立，那么就会把所有的英雄都查出来，而不只是盖伦
+// 如果Hero表里的数据是海量的，比如几百万条，把这个表里的数据全部查出来，会让数据库负载变高，CPU100%，内存消耗光，响应变得极其缓慢
+System.out.println(sql0);
+ResultSet rs0 = s.executeQuery(sql0);
+while (rs0.next()) {
+    String heroName = rs0.getString(&quot;name&quot;);
+    System.out.println(heroName);
+}
+s.execute(sql0);
+
+// 使用预编译Statement就可以杜绝SQL注入
+ps.setString(1, name);
+ResultSet rs = ps.executeQuery();
+// 查不出数据出来
+while (rs.next()) {
+    String heroName = rs.getString(&quot;name&quot;);
+    System.out.println(heroName);
+}</code></pre><h2 id="execute与executeUpdate的区别"><a href="#execute与executeUpdate的区别" class="headerlink" title="execute与executeUpdate的区别"></a>execute与executeUpdate的区别</h2><h3 id="相同点：都可以执行增加，删除，修改"><a href="#相同点：都可以执行增加，删除，修改" class="headerlink" title="相同点：都可以执行增加，删除，修改"></a>相同点：都可以执行增加，删除，修改</h3><pre><code>s.execute(sqlInsert);
+s.execute(sqlDelete);
+s.execute(sqlUpdate);
+s.executeUpdate(sqlInsert);
+s.executeUpdate(sqlDelete);
+s.executeUpdate(sqlUpdate);</code></pre><h3 id="不同1："><a href="#不同1：" class="headerlink" title="不同1："></a>不同1：</h3><pre><code>// 不同1：execute可以执行查询语句，然后通过getResultSet，把结果集取出来
+String sqlSelect = &quot;select * from hero&quot;;
+s.execute(sqlSelect);
+ResultSet rs = s.getResultSet();
+while (rs.next()) {
+    System.out.println(rs.getInt(&quot;id&quot;));
+}
+
+// executeUpdate不能执行查询语句
+// s.executeUpdate(sqlSelect);</code></pre><h3 id="不同2"><a href="#不同2" class="headerlink" title="不同2:"></a>不同2:</h3><pre><code>// execute返回boolean类型，true表示执行的是查询语句，false表示执行的是insert,delete,update等等
+boolean isSelect = s.execute(sqlSelect);
+System.out.println(isSelect);
+
+// executeUpdate返回的是int，表示有多少条数据受到了影响
+String sqlUpdate = &quot;update Hero set hp = 300 where id &lt; 100&quot;;
+int number = s.executeUpdate(sqlUpdate);
+System.out.println(number);</code></pre><h1 id="获取自增长ID以及表的元数据"><a href="#获取自增长ID以及表的元数据" class="headerlink" title="获取自增长ID以及表的元数据"></a>获取自增长ID以及表的元数据</h1><h2 id="获取自增长id"><a href="#获取自增长id" class="headerlink" title="获取自增长id"></a>获取自增长id</h2><p>在Statement通过execute或者executeUpdate执行完插入语句后，MySQL会为新插入的数据分配一个自增长id，(前提是这个表的id设置为了自增长,在Mysql创建表的时候，AUTO_INCREMENT就表示自增长)</p>
+<pre><code>CREATE TABLE hero (
+id int(11) AUTO_INCREMENT,
+...
+}</code></pre><p>但是无论是execute还是executeUpdate都不会返回这个自增长id是多少。需要通过Statement的getGeneratedKeys获取该id<br>注： 第20行的代码，后面加了个Statement.RETURN_GENERATED_KEYS参数，以确保会返回自增长ID。 通常情况下不需要加这个，有的时候需要加，所以先加上，保险一些</p>
+<pre><code>PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);</code></pre><details><summary>getGeneratedKeys.java</summary>
+
+<pre><code>ps.setString(1, &quot;盖伦&quot;);
+ps.setFloat(2, 616);
+ps.setInt(3, 100);
+
+// 执行插入语句
+ps.execute();
+
+// 在执行完插入语句后，MySQL会为新插入的数据分配一个自增长id
+// JDBC通过getGeneratedKeys获取该id
+ResultSet rs = ps.getGeneratedKeys();
+if (rs.next()) {
+    int id = rs.getInt(1);
+    System.out.println(id);
+}</code></pre></details>
+
+<h2 id="获取表的元数据"><a href="#获取表的元数据" class="headerlink" title="获取表的元数据"></a>获取表的元数据</h2><p><font color='navyblue'>元数据概念：</font>和数据库服务器相关的数据，比如数据库版本，有哪些表，表有哪些字段，字段类型是什么等等。</p>
+<details><summary>getDatabase.java</summary>
+
+<pre><code>    try (Connection c = DriverManager.getConnection(&quot;jdbc:mysql://127.0.0.1:3306/game?characterEncoding=UTF-8&quot;,&quot;root&quot;, &quot;&quot;);) {
+
+    // 查看数据库层面的元数据
+    DatabaseMetaData dbmd = c.getMetaData();
+    // 获取数据库服务器产品名称
+    System.out.println(&quot;数据库产品名称:\t&quot;+dbmd.getDatabaseProductName());
+    // 获取数据库服务器产品版本号
+    System.out.println(&quot;数据库产品版本:\t&quot;+dbmd.getDatabaseProductVersion());
+    // 获取数据库服务器用作类别和表名之间的分隔符 如test.user
+    System.out.println(&quot;数据库和表分隔符:\t&quot;+dbmd.getCatalogSeparator());
+    // 获取驱动版本
+    System.out.println(&quot;驱动版本:\t&quot;+dbmd.getDriverVersion());
+    System.out.println(&quot;可用的数据库列表：&quot;);
+    // 获取数据库名称
+    ResultSet rs = dbmd.getCatalogs();
+    while (rs.next()) {
+        System.out.println(&quot;数据库名称:\t&quot;+rs.getString(1));
+    }
+} </code></pre></details>
+
+<h1 id="如何在JDBC中使用事务"><a href="#如何在JDBC中使用事务" class="headerlink" title="如何在JDBC中使用事务"></a>如何在JDBC中使用事务</h1><h2 id="使用事务"><a href="#使用事务" class="headerlink" title="使用事务"></a>使用事务</h2><p>在事务中的多个操作，要么都成功，要么都失败<br>通过<font color='orange'>c.setAutoCommit(false)</font>关闭自动提交<br>使用<font color='orange'>c.commit()</font>进行手动提交<br>Commit.java的代码就处于同一个事务当中，要么都成功，要么都失败<br>所以，虽然第一条SQL语句是可以执行的，但是第二条SQL语句有错误，其结果就是两条SQL语句都没有被提交。 除非两条SQL语句都是正确的。</p>
+<details><summary>Commit.java</summary>
+
+<pre><code>// 有事务的前提下
+// 在事务中的多个操作，要么都成功，要么都失败
+c.setAutoCommit(false);
+
+// 加血的SQL
+String sql1 = &quot;update hero set hp = hp +1 where id = 22&quot;;
+s.execute(sql1);
+
+// 减血的SQL
+// 不小心写错写成了 updata(而非update)
+String sql2 = &quot;updata hero set hp = hp -1 where id = 22&quot;;
+s.execute(sql2);
+
+// 手动提交
+c.commit();</code></pre></details>
+
+<h2 id="MYSQL-表的类型必须是INNODB才支持事务"><a href="#MYSQL-表的类型必须是INNODB才支持事务" class="headerlink" title="MYSQL 表的类型必须是INNODB才支持事务"></a>MYSQL 表的类型必须是INNODB才支持事务</h2><p>在Mysql中，只有当表的类型是INNODB的时候，才支持事务，所以需要把表的类型设置为INNODB,否则无法观察到事务.</p>
+<p>修改表的类型为INNODB的SQL：</p>
+<pre><code>alter table hero ENGINE  = innodb;</code></pre><p>查看表的类型的SQL:</p>
+<pre><code>show table status from how2java; </code></pre><p>不过有个前提，就是当前的MYSQL服务器本身要支持INNODB,如果不支持，请看 开启MYSQL INNODB的办法</p>
+<h1 id="使用JDBC做一个ORM例子"><a href="#使用JDBC做一个ORM例子" class="headerlink" title="使用JDBC做一个ORM例子"></a>使用JDBC做一个ORM例子</h1><p>ORM=Object Relationship Database Mapping,对象和关系数据库的映射<br>简单说，一个对象，对应数据库里的一条记录</p>
+<details><summary>ORM.java</summary>
+
+<p>package Test01;</p>
+<p>//导入包<br>public class ORM {<br>    public static HeroJDBC get(int id) {<br>        HeroJDBC hero = null;</p>
+<pre><code>    Connection con;
+    //jdbc驱动
+    String driver=&quot;com.mysql.cj.jdbc.Driver&quot;;
+    //这里我的数据库是cxxt
+    String url=&quot;jdbc:mysql://localhost:3306/game?&amp;useSSL=false&amp;serverTimezone=UTC&quot;;
+    String user=&quot;root&quot;;
+    String password=&quot;&quot;;
+    try {
+        //注册JDBC驱动程序
+        Class.forName(driver);
+        //建立连接
+        con = DriverManager.getConnection(url, user, password);
+        if (!con.isClosed()) {
+            System.out.println(&quot;数据库连接成功&quot;);
+        }
+        Statement stmt=con.createStatement();
+        String sql = &quot;select * from hero where id = &quot; + id;
+
+        ResultSet rs = stmt.executeQuery(sql);
+
+    // 因为id是唯一的，ResultSet最多只能有一条记录
+    // 所以使用if代替while
+    if (rs.next()) {
+        hero = new HeroJDBC();
+        String name = rs.getString(2);
+        float hp = rs.getFloat(&quot;hp&quot;);
+        int damage = rs.getInt(4);
+        hero.name = name;
+        hero.hp = hp;
+        hero.damage = damage;
+        hero.id = id;
+    }
+    } catch (SQLException | ClassNotFoundException e) {
+    // TODO Auto-generated catch block
+        e.printStackTrace();
+    }
+        return hero;
+    }
+
+public static void main(String[] args) {
+    HeroJDBC h = get(1);
+    System.out.println(h.id+h.name+h.hp+h.damage);
+
+    }
+}</code></pre></details>
+<details><summary>HeroJDBC.java</summary>
+
+<pre><code>public class HeroJDBC {
+//增加id属性
+public int id;
+public String name;
+public float hp;
+public int damage;</code></pre><p>}</p>
+</details>
+
+<h1 id="基于JDBC设计DAO的实例"><a href="#基于JDBC设计DAO的实例" class="headerlink" title="基于JDBC设计DAO的实例"></a>基于JDBC设计DAO的实例</h1><p><font color='navyblue'>DAO=DataAccess Object</font><br>数据访问对象</p>
+<p>实际上就是运用了练习-ORM中的思路，把数据库相关的操作都封装在这个类里面，其他地方看不到JDBC的代码</p>
+<h2 id="DAO接口"><a href="#DAO接口" class="headerlink" title="DAO接口"></a>DAO接口</h2><details><summary>DAO.java</summary>
+
+<pre><code>import java.util.List;
+import charactor.HeroJDBC;
+public interface DAO {
+    //增加
+    public void add(Hero hero);
+    //修改
+    public void update(Hero hero);
+    //删除
+    public void delete(int id);
+    //获取
+    public Hero get(int id);
+    //查询
+    public List&lt;Hero&gt; list();
+    //分页查询
+    public List&lt;Hero&gt; list(int start, int count);
+}</code></pre></details>
+
+<h2 id="HeroDAO"><a href="#HeroDAO" class="headerlink" title="HeroDAO"></a>HeroDAO</h2><p>设计类HeroDAO，实现接口DAO</p>
+<p>这个HeroDAO和答案-ORM很接近，做了几个改进：</p>
+<p>1.把驱动的初始化放在了构造方法HeroDAO里：</p>
+<pre><code>public HeroDAO() {
+try {
+    Class.forName(&quot;com.mysql.jdbc.Driver&quot;);
+} catch (ClassNotFoundException e) {
+    e.printStackTrace();
+}
+}</code></pre><p>因为驱动初始化只需要执行一次，所以放在这里更合适，其他方法里也不需要写了，代码更简洁  </p>
+<p>2.提供了一个getConnection方法返回连接<br>所有的数据库操作都需要事先拿到一个数据库连接Connection，以前的做法每个方法里都会写一个，如果要改动密码，那么每个地方都需要修改。 通过这种方式，只需要修改这一个地方就可以了。 代码变得更容易维护，而且也更加简洁。</p>
+<h1 id="数据库连接池"><a href="#数据库连接池" class="headerlink" title="数据库连接池"></a>数据库连接池</h1><h2 id="原理-传统方式"><a href="#原理-传统方式" class="headerlink" title="原理-传统方式"></a>原理-传统方式</h2><p>当有多个线程，每个线程都需要连接数据库执行SQL语句的话，那么每个线程都会创建一个连接，并且在使用完毕后，关闭连接。</p>
+<p>创建连接和关闭连接的过程也是比较消耗时间的，当多线程并发的时候，系统就会变得很卡顿。</p>
+<p>同时，一个数据库同时支持的连接总数也是有限的，如果多线程并发量很大，那么数据库连接的总数就会被消耗光，后续线程发起的数据库连接就会失败。</p>
+<p><img src="https://stepimagewm.how2j.cn/2654.png" alt="avatar"></p>
+<h2 id="原理-使用池"><a href="#原理-使用池" class="headerlink" title="原理-使用池"></a>原理-使用池</h2><p>与传统方式不同，连接池在使用之前，就会创建好一定数量的连接。</p>
+<p>如果有任何线程需要使用连接，那么就从连接池里面借用，而不是自己重新创建.<br>使用完毕后，又把这个连接归还给连接池供下一次或者其他线程使用。</p>
+<p>倘若发生多线程并发情况，连接池里的连接被借用光了，那么其他线程就会临时等待，直到有连接被归还回来，再继续使用。</p>
+<p>整个过程，这些连接都不会被关闭，而是不断的被循环使用，从而节约了启动和关闭连接的时间。</p>
+<p><img src="https://stepimagewm.how2j.cn/2655.png" alt="avatar"></p>
+<h2 id="ConnectionPool构造方法和初始化"><a href="#ConnectionPool构造方法和初始化" class="headerlink" title="ConnectionPool构造方法和初始化"></a>ConnectionPool构造方法和初始化</h2><ol>
+<li><p>ConnectionPool() 构造方法约定了这个连接池一共有多少连接</p>
+</li>
+<li><p>在init() 初始化方法中，创建了size条连接。 注意，这里不能使用try-with-resource这种自动关闭连接的方式，因为连接恰恰需要保持不关闭状态，供后续循环使用</p>
+</li>
+<li><p>getConnection， 判断是否为空，如果是空的就wait等待，否则就借用一条连接出去</p>
+</li>
+<li><p>returnConnection， 在使用完毕后，归还这个连接到连接池，并且在归还完毕后，调用notifyAll，通知那些等待的线程，有新的连接可以借用了。</p>
+</li>
+</ol>
+<p>注：连接池设计用到了多线程的wait和notifyAll，这些内容可以在多线程交互章节查阅学习。</p>
+</p>
+      <div class="post-button"><a class="btn" href="/2020/07/14/JAVA-JDBC/" rel="noopener"><i class="fa fa-angle-double-right fa-fw"></i>阅读更多</a></div>
+    </div>
+  </div>
+  <div class="lx-entry padding">
+    <div>
       <h2 class="title"><a href="/2020/07/10/Spring%E5%AD%A6%E4%B9%A0/">JAVA后端学习规划</a></h2>
       <span class="lx-post-detail"><i class="fa fa-calendar-o"></i> 2020-07-10</span>
       <p><h1 id="Spring"><a href="#Spring" class="headerlink" title="Spring"></a>Spring</h1><h2 id="学习关键："><a href="#学习关键：" class="headerlink" title="学习关键："></a>学习关键：</h2><p>Spring 核心是 <font color='navyblue'>IoC 容器</font>，所以一定要透彻理解什么是控制反转（IoC）容器，以及如何配置及使用容器，其他所有技术都是基于容器实现的。<br>理解好 IoC 后，接下来是面向<font color='navyblue'>切面编程（AOP）</font>，首先还是明确概念，基本配置，最后是实现原理，接下来就是数据库事务管理。<br>其实 Spring 管理事务是通过面向切面编程实现的，所以基础很重要，IoC 容器和 AOP 学好，其余都是基于这两个核心东西的实现，</p>
@@ -133,11 +1027,9 @@
   </div>
   <div class="lx-entry padding">
     <div>
-      <h2 class="title"><a href="/2020/07/09/JAVA%E5%9F%BA%E7%A1%80%E6%8A%80%E6%9C%AF/">JAVA核心技术</a></h2>
+      <h2 class="title"><a href="/2020/07/09/JAVA-%E5%A4%9A%E7%BA%BF%E7%A8%8B/">JAVA核心技术</a></h2>
       <span class="lx-post-detail"><i class="fa fa-calendar-o"></i> 2020-07-09</span>
-      <p><!-- TOC -->autoauto- [多线程](#多线程)auto    - [线程概念](#线程概念)auto    - [多线程-继承线程类](#多线程-继承线程类)auto    - [多线程-实现Runnable接口](#多线程-实现runnable接口)auto    - [创建多线程-匿名类](#创建多线程-匿名类)auto- [常见的线程方法](#常见的线程方法)auto    - [Thread.sleep()](#threadsleep)auto- [join()](#join)auto    - [线程优先级](#线程优先级)auto    - [临时暂停](#临时暂停)auto    - [守护线程](#守护线程)auto- [同步](#同步)auto    - [synchronized 同步对象概念](#synchronized-同步对象概念)auto    - [线程安全的类](#线程安全的类)auto- [线程安全相关面试题](#线程安全相关面试题)auto    - [HashMap和Hashtable的区别](#hashmap和hashtable的区别)auto    - [StringBuffer和StringBuilder的区别](#stringbuffer和stringbuilder的区别)auto    - [把非线程安全的集合转换为线程安全](#把非线程安全的集合转换为线程安全)auto    - [JAVA 线程之间的交互 WAIT和NOTIFY](#java-线程之间的交互-wait和notify)auto    - [关于wait、notify和notifyAll](#关于waitnotify和notifyall)autoauto<!-- /TOC -->
-
-<h1 id="多线程"><a href="#多线程" class="headerlink" title="多线程"></a>多线程</h1><h2 id="线程概念"><a href="#线程概念" class="headerlink" title="线程概念"></a>线程概念</h2><details><summary><font color='navyblue'>进程</font></summary>启动一个X.exe程序叫做一个进程，再启动一个Y.exe，那么就是两个进程。</details>
+      <p><h1 id="1-多线程"><a href="#1-多线程" class="headerlink" title="1. 多线程"></a>1. 多线程</h1><h2 id="1-1-线程概念"><a href="#1-1-线程概念" class="headerlink" title="1.1. 线程概念"></a>1.1. 线程概念</h2><details><summary><font color='navyblue'>进程</font></summary>启动一个X.exe程序叫做一个进程，再启动一个Y.exe，那么就是两个进程。</details>
 <details><summary><font color='navyblue'>线程</font></summary>线程是在进程内部同时进行的事，如在游戏中，A对B造成伤害，同时C在对D造成伤害</details>
 
 <p>不使用多线程举例：</p>
@@ -211,7 +1103,7 @@ public class TestThread {
     }
 }</code></pre></details>
 
-<h2 id="多线程-继承线程类"><a href="#多线程-继承线程类" class="headerlink" title="多线程-继承线程类"></a>多线程-继承线程类</h2><p>使用多线程，就可以做到盖伦在攻击提莫的同时，赏金猎人也在攻击盲僧<br>设计一个类KillThread <font color='orange'>继承Thread，并且重写run方法</font></p>
+<h2 id="1-2-多线程-继承线程类"><a href="#1-2-多线程-继承线程类" class="headerlink" title="1.2. 多线程-继承线程类"></a>1.2. 多线程-继承线程类</h2><p>使用多线程，就可以做到盖伦在攻击提莫的同时，赏金猎人也在攻击盲僧<br>设计一个类KillThread <font color='orange'>继承Thread，并且重写run方法</font></p>
 <p>启动线程办法： 实例化一个KillThread对象，并且调用其,<font color='orange'>start方法启动线程,run方法并不能启动一个线程</font><br>就可以观察到 赏金猎人攻击盲僧的同时，盖伦也在攻击提莫</p>
 <p>使用多线程举例： </p>
 <blockquote>
@@ -254,7 +1146,7 @@ public void run(){
     }
 }</code></pre></details>
 
-<h2 id="多线程-实现Runnable接口"><a href="#多线程-实现Runnable接口" class="headerlink" title="多线程-实现Runnable接口"></a>多线程-实现Runnable接口</h2><p>创建一个Battle类，来实现Runnable借口<br>启动的时候，首先创建一个Battle对象，然后再根据该battle对象创建一个线程对象，并启动</p>
+<h2 id="1-3-多线程-实现Runnable接口"><a href="#1-3-多线程-实现Runnable接口" class="headerlink" title="1.3. 多线程-实现Runnable接口"></a>1.3. 多线程-实现Runnable接口</h2><p>创建一个Battle类，来实现Runnable借口<br>启动的时候，首先创建一个Battle对象，然后再根据该battle对象创建一个线程对象，并启动</p>
 <pre><code>Battle battle1=new Battle(gareen,teemo);
 new Thread(battle1).start();</code></pre><p>battle1对象实现了Runnable接口，所以有run方法，但是直接调用run方法并不会启动一个新的线程，所以需要借助一个线程对象的start()方法，才能启动一个新的线程<br>所以在创建Thread对象的时候，要把battle1作为构造方法的参数传递进去，这个线程启动的时候，就会去执行battle1.run()方法了</p>
 <details><summary>Battle.java</summary>
@@ -315,7 +1207,7 @@ new Thread(battle1).start();
 Battle battle2=new Battle(bh,leesin);
 new Thread(battle2).start();</code></pre></details>
 
-<h2 id="创建多线程-匿名类"><a href="#创建多线程-匿名类" class="headerlink" title="创建多线程-匿名类"></a>创建多线程-匿名类</h2><p>使用匿名类，继承Thread,重写run方法，直接在run方法中写业务代码<br>匿名类的一个好处是可以很方便的访问外部的局部变量。</p>
+<h2 id="1-4-创建多线程-匿名类"><a href="#1-4-创建多线程-匿名类" class="headerlink" title="1.4. 创建多线程-匿名类"></a>1.4. 创建多线程-匿名类</h2><p>使用匿名类，继承Thread,重写run方法，直接在run方法中写业务代码<br>匿名类的一个好处是可以很方便的访问外部的局部变量。</p>
 <details><summary>Unname.java</summary> 
 
 <pre><code>    /*单线程
@@ -364,7 +1256,7 @@ new Thread(battle2).start();</code></pre></details>
 }</code></pre><p>}</p>
 </details>
 
-<h1 id="常见的线程方法"><a href="#常见的线程方法" class="headerlink" title="常见的线程方法"></a>常见的线程方法</h1><h2 id="Thread-sleep"><a href="#Thread-sleep" class="headerlink" title="Thread.sleep()"></a>Thread.sleep()</h2><p>Thread.sleep(1000); 表示当前线程暂停1000毫秒 ，其他线程不受影响<br>Thread.sleep(1000); 会抛出InterruptedException 中断异常，因为当前线程sleep的时候，有可能被停止，这时就会抛出 InterruptedException</p>
+<h1 id="2-常见的线程方法"><a href="#2-常见的线程方法" class="headerlink" title="2. 常见的线程方法"></a>2. 常见的线程方法</h1><h2 id="2-1-Thread-sleep"><a href="#2-1-Thread-sleep" class="headerlink" title="2.1. Thread.sleep()"></a>2.1. Thread.sleep()</h2><p>Thread.sleep(1000); 表示当前线程暂停1000毫秒 ，其他线程不受影响<br>Thread.sleep(1000); 会抛出InterruptedException 中断异常，因为当前线程sleep的时候，有可能被停止，这时就会抛出 InterruptedException</p>
 <details><summary>sleep.java</summary>
 
 <pre><code>public class sleep {
@@ -388,7 +1280,7 @@ new Thread(battle2).start();</code></pre></details>
     }
 }</code></pre></details>
 
-<h1 id="join"><a href="#join" class="headerlink" title="join()"></a>join()</h1><p>首先解释一下主线程的概念<br>所有进程，至少会有一个线程即主线程，即main方法开始执行，就会有一个看不见的主线程存在。<br>在42行执行t.join，即表明在主线程中加入该线程。<br>主线程会等待该线程结束完毕， 才会往下运行。  </p>
+<h2 id="3-join"><a href="#3-join" class="headerlink" title="3. join()"></a>3. join()</h2><p>首先解释一下主线程的概念<br>所有进程，至少会有一个线程即主线程，即main方法开始执行，就会有一个看不见的主线程存在。<br>在42行执行t.join，即表明在主线程中加入该线程。<br>主线程会等待该线程结束完毕， 才会往下运行。  </p>
 <details><summary>join.java</summary>
     public class join {
 
@@ -446,12 +1338,12 @@ new Thread(battle2).start();</code></pre></details>
     }
 }</code></pre></details>
 
-<h2 id="线程优先级"><a href="#线程优先级" class="headerlink" title="线程优先级"></a>线程优先级</h2><p>当线程处于竞争关系的时候，优先级高的线程会有更大的几率获得CPU资源<br>为了演示该效果，要把暂停时间去掉，多条线程各自会尽力去占有CPU资源<br>同时把英雄的血量增加100倍，攻击减低到1，才有足够的时间观察到优先级的演示<br>如图可见，线程1的优先级是MAX_PRIORITY，所以它争取到了更多的CPU资源执行代码  </p>
+<h2 id="3-1-线程优先级"><a href="#3-1-线程优先级" class="headerlink" title="3.1. 线程优先级"></a>3.1. 线程优先级</h2><p>当线程处于竞争关系的时候，优先级高的线程会有更大的几率获得CPU资源<br>为了演示该效果，要把暂停时间去掉，多条线程各自会尽力去占有CPU资源<br>同时把英雄的血量增加100倍，攻击减低到1，才有足够的时间观察到优先级的演示<br>如图可见，线程1的优先级是MAX_PRIORITY，所以它争取到了更多的CPU资源执行代码  </p>
 <pre><code>t1.setPriority(Thread.MAX_PRIORITY);
 t2.setPriority(Thread.MIN_PRIORITY);
 t1.start();
-t2.start();</code></pre><h2 id="临时暂停"><a href="#临时暂停" class="headerlink" title="临时暂停"></a>临时暂停</h2><p>当前线程，临时暂停，使得其他线程可以有更多的机会占用CPU资源</p>
-<pre><code>Thread.yield();</code></pre><h2 id="守护线程"><a href="#守护线程" class="headerlink" title="守护线程"></a>守护线程</h2><p>守护线程的概念是： 当一个进程里，所有的线程都是守护线程的时候，结束当前进程。  </p>
+t2.start();</code></pre><h2 id="3-2-临时暂停"><a href="#3-2-临时暂停" class="headerlink" title="3.2. 临时暂停"></a>3.2. 临时暂停</h2><p>当前线程，临时暂停，使得其他线程可以有更多的机会占用CPU资源</p>
+<pre><code>Thread.yield();</code></pre><h2 id="3-3-守护线程"><a href="#3-3-守护线程" class="headerlink" title="3.3. 守护线程"></a>3.3. 守护线程</h2><p>守护线程的概念是： 当一个进程里，所有的线程都是守护线程的时候，结束当前进程。  </p>
 <p>就好像一个公司有销售部，生产部这些和业务挂钩的部门。除此之外，还有后勤，行政等这些支持部门。  </p>
 <p>如果一家公司销售部，生产部都解散了，那么只剩下后勤和行政，那么这家公司也可以解散了。  </p>
 <p>守护线程就相当于那些支持部门，如果一个进程只剩下守护线程，那么进程就会自动结束。  </p>
@@ -481,27 +1373,27 @@ public static void main(String[] args) {
     t1.start();
 }</code></pre></details>
 
-<h1 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h1><h2 id="synchronized-同步对象概念"><a href="#synchronized-同步对象概念" class="headerlink" title="synchronized 同步对象概念"></a>synchronized 同步对象概念</h2><pre><code>Object someObject =new Object();
+<h1 id="4-同步"><a href="#4-同步" class="headerlink" title="4. 同步"></a>4. 同步</h1><h2 id="4-1-synchronized-同步对象概念"><a href="#4-1-synchronized-同步对象概念" class="headerlink" title="4.1. synchronized 同步对象概念"></a>4.1. synchronized 同步对象概念</h2><pre><code>Object someObject =new Object();
 synchronized (someObject){
 //此处的代码只有占有了someObject后才可以执行
 }</code></pre><p>synchronized表示当前线程，独占 对象someObject  </p>
 <p>当前线程独占了对象someObject，如果有其他线程试图占有对象someObject，就会等待，直到当前线程释放对someObject的占用。  </p>
 <p>someObject 又叫同步对象，所有的对象，都可以作为同步对象。为了达到同步的效果，必须使用同一个同步对象</p>
 <p>释放同步对象的方式： synchronized 块自然结束，或者有异常抛出</p>
-<h2 id="线程安全的类"><a href="#线程安全的类" class="headerlink" title="线程安全的类"></a>线程安全的类</h2><p>如果一个类，其方法都是有synchronized修饰的，那么该类就叫做线程安全的类</p>
+<h2 id="4-2-线程安全的类"><a href="#4-2-线程安全的类" class="headerlink" title="4.2. 线程安全的类"></a>4.2. 线程安全的类</h2><p>如果一个类，其方法都是有synchronized修饰的，那么该类就叫做线程安全的类</p>
 <p>同一时间，只有一个线程能够进入 这种类的一个实例 的去修改数据，进而保证了这个实例中的数据的安全(不会同时被多线程修改而变成脏数据)</p>
-<h1 id="线程安全相关面试题"><a href="#线程安全相关面试题" class="headerlink" title="线程安全相关面试题"></a>线程安全相关面试题</h1><h2 id="HashMap和Hashtable的区别"><a href="#HashMap和Hashtable的区别" class="headerlink" title="HashMap和Hashtable的区别"></a>HashMap和Hashtable的区别</h2><p>HashMap和Hashtable都实现了Map接口，都是键值对保存数据的方式  </p>
+<h1 id="5-线程安全相关面试题"><a href="#5-线程安全相关面试题" class="headerlink" title="5. 线程安全相关面试题"></a>5. 线程安全相关面试题</h1><h2 id="5-1-HashMap和Hashtable的区别"><a href="#5-1-HashMap和Hashtable的区别" class="headerlink" title="5.1. HashMap和Hashtable的区别"></a>5.1. HashMap和Hashtable的区别</h2><p>HashMap和Hashtable都实现了Map接口，都是键值对保存数据的方式  </p>
 <p>区别1：HashMap可以存放 null；Hashtable不能存放null<br>区别2：HashMap不是线程安全的类；Hashtable是线程安全的类<br><img src="https://stepimagewm.how2j.cn/2595.png" alt="avatar"></p>
-<h2 id="StringBuffer和StringBuilder的区别"><a href="#StringBuffer和StringBuilder的区别" class="headerlink" title="StringBuffer和StringBuilder的区别"></a>StringBuffer和StringBuilder的区别</h2><p>StringBuffer 是线程安全的<br>StringBuilder 是非线程安全的</p>
+<h2 id="5-2-StringBuffer和StringBuilder的区别"><a href="#5-2-StringBuffer和StringBuilder的区别" class="headerlink" title="5.2. StringBuffer和StringBuilder的区别"></a>5.2. StringBuffer和StringBuilder的区别</h2><p>StringBuffer 是线程安全的<br>StringBuilder 是非线程安全的</p>
 <p>所以当进行大量字符串拼接操作的时候，如果是单线程就用StringBuilder会更快些，如果是多线程，就需要用StringBuffer 保证数据的安全性</p>
 <p>非线程安全的为什么会比线程安全的快？ 因为不需要同步，省略了些时间<br><img src="https://stepimagewm.how2j.cn/2596.png" alt="avatar"></p>
-<h2 id="把非线程安全的集合转换为线程安全"><a href="#把非线程安全的集合转换为线程安全" class="headerlink" title="把非线程安全的集合转换为线程安全"></a>把非线程安全的集合转换为线程安全</h2><p>ArrayList是非线程安全的，换句话说，多个线程可以同时进入一个ArrayList对象的add方法</p>
+<h2 id="5-3-把非线程安全的集合转换为线程安全"><a href="#5-3-把非线程安全的集合转换为线程安全" class="headerlink" title="5.3. 把非线程安全的集合转换为线程安全"></a>5.3. 把非线程安全的集合转换为线程安全</h2><p>ArrayList是非线程安全的，换句话说，多个线程可以同时进入一个ArrayList对象的add方法</p>
 <p>借助Collections.synchronizedList，可以把ArrayList转换为线程安全的List。</p>
 <blockquote>
 <p>List<Integer> list1 = new ArrayList&lt;&gt;();<br>List<Integer> list2 = Collections.synchronizedList(list1);</p>
 </blockquote>
 <p>与此类似的，还有HashSet,LinkedList,HashMap等等非线程安全的类，都通过工具类Collections转换为线程安全的</p>
-<h2 id="JAVA-线程之间的交互-WAIT和NOTIFY"><a href="#JAVA-线程之间的交互-WAIT和NOTIFY" class="headerlink" title="JAVA 线程之间的交互 WAIT和NOTIFY"></a>JAVA 线程之间的交互 WAIT和NOTIFY</h2><p>线程之间有交互通知的需求，考虑如下情况：<br>有两个线程，处理同一个英雄。一个加血，一个减血。</p>
+<h2 id="5-4-JAVA-线程之间的交互-WAIT和NOTIFY"><a href="#5-4-JAVA-线程之间的交互-WAIT和NOTIFY" class="headerlink" title="5.4. JAVA 线程之间的交互 WAIT和NOTIFY"></a>5.4. JAVA 线程之间的交互 WAIT和NOTIFY</h2><p>线程之间有交互通知的需求，考虑如下情况：<br>有两个线程，处理同一个英雄。一个加血，一个减血。</p>
 <p>减血的线程，发现血量=1，就停止减血，直到加血的线程为英雄加了血，才可以继续减血</p>
 <p><img src="https://stepimagewm.how2j.cn/796.png" alt="avatar"></p>
 <p>解决方法：<br>在Hero类中：hurt()减血方法：当hp=1的时候，执行this.wait().<br><font color='orange'>this.wait()表示 让占有this的线程等待，并临时释放占有</font><br>进入hurt方法的线程必然是减血线程，this.wait()会让减血线程临时释放对this的占有。 这样加血线程，就有机会进入recover()加血方法了。</p>
@@ -530,19 +1422,306 @@ public synchronized void hurt() {
     System.out.printf(&quot;%s 减血1点,减少血后，%s的血量是%.0f%n&quot;, name, name, hp);
 }</code></pre></details>
 
-<h2 id="关于wait、notify和notifyAll"><a href="#关于wait、notify和notifyAll" class="headerlink" title="关于wait、notify和notifyAll"></a>关于wait、notify和notifyAll</h2><p>wait方法和notify方法，并不是Thread线程上的方法，它们是Object上的方法。</p>
+<h2 id="5-5-关于wait、notify和notifyAll"><a href="#5-5-关于wait、notify和notifyAll" class="headerlink" title="5.5. 关于wait、notify和notifyAll"></a>5.5. 关于wait、notify和notifyAll</h2><p>wait方法和notify方法，并不是Thread线程上的方法，它们是Object上的方法。</p>
 <p>因为所有的Object都可以被用来作为同步对象，所以准确的讲，wait和notify是同步对象上的方法。</p>
 <p><font color='orange'>wait()</font> 让占用了这个同步对象的线程，临时释放当前的占用，并且等待。 所以调用wait是有前提条件的，一定是在synchronized块里，否则就会出错。</p>
-<blockquote>
-<p>public synchronized void hurt() {<br>  。。。<br>  this.wait();<br>  。。。<br>}</p>
-</blockquote>
-<p><font color='orange'>notify()</font>，通知一个等待在这个同步对象上的线程，你可以苏醒过来了，有机会重新占用当前对象了。</p>
-<blockquote>
-<p>public synchronized void recover() {<br>   。。。<br>   this.notify();<br>}</p>
-</blockquote>
-<p><font color='orange'>notifyAll()</font>，通知所有的等待在这个同步对象上的线程，你们可以苏醒过来了，有机会重新占用当前对象了。</p>
+<pre><code>public synchronized void hurt() {  
+。。。  
+this.wait();  
+。。。  
+}</code></pre><p><font color='orange'>notify()</font>，通知一个等待在这个同步对象上的线程，你可以苏醒过来了，有机会重新占用当前对象了。</p>
+<pre><code>public synchronized void recover() {  
+。。。  
+this.notify();  
+}</code></pre><p><font color='orange'>notifyAll()</font>，通知所有的等待在这个同步对象上的线程，你们可以苏醒过来了，有机会重新占用当前对象了。</p>
+<h1 id="JAVA-如何开发一个自定义线程池"><a href="#JAVA-如何开发一个自定义线程池" class="headerlink" title="JAVA 如何开发一个自定义线程池"></a>JAVA 如何开发一个自定义线程池</h1><p>每一个线程的启动和结束都是比较消耗时间和占用资源的，如果在系统中用到了很多的线程，大量的启动和结束动作会导致系统的性能变卡，响应变慢。</p>
+<p>为了解决这个问题，引入线程池这种设计思想，线程池的模式很像生产者消费者模式，消费的对象是一个一个的能够运行的任务。</p>
+<h2 id="线程池设计思路"><a href="#线程池设计思路" class="headerlink" title="线程池设计思路"></a>线程池设计思路</h2><p>线程池的思路和生产者消费者模型是很接近的。</p>
+<ol>
+<li>准备一个任务容器</li>
+<li>一次性启动10个消费者线程</li>
+<li>刚开始任务容器是空的，所以线程都wait在上面。</li>
+<li>直到一个外部线程往这个任务容器中扔了一个“任务”，就会有一个消费者线程被唤醒notify</li>
+<li>这个消费者线程取出“任务”，并且执行这个任务，执行完毕后，继续等待下一次任务的到来。</li>
+<li>如果短时间内，有较多的任务加入，那么就会有多个线程被唤醒，去执行这些任务。</li>
+</ol>
+<p>在整个过程中，都不需要创建新的线程，而是循环使用这些已经存在的线程</p>
+<p><img src="https://stepimagewm.how2j.cn/2600.png" alt="avatar"></p>
+<h2 id="使用java自带线程池"><a href="#使用java自带线程池" class="headerlink" title="使用java自带线程池"></a>使用java自带线程池</h2><p>java提供自带的线程池，而不需要自己去开发一个自定义线程池了。</p>
+<p>线程池类ThreadPoolExecutor在包<font color='orange'>java.util.concurrent</font>下</p>
+<pre><code>ThreadPoolExecutor threadPool= new ThreadPoolExecutor(10, 15, 60, TimeUnit.SECONDS, new LinkedBlockingQueue&lt;Runnable&gt;());</code></pre><p>第一个参数10 表示这个线程池初始化了10个线程在里面工作<br>第二个参数15 表示如果10个线程不够用了，就会自动增加到最多15个线程<br>第三个参数60 结合第四个参数TimeUnit.SECONDS，表示经过60秒，多出来的线程还没有接到活儿，就会回收，最后保持池子里就10个<br>第四个参数TimeUnit.SECONDS 如上<br>第五个参数 new LinkedBlockingQueue() 用来放任务的集合  </p>
+<p>execute方法用于添加新的任务</p>
+<h1 id="LOCK对象"><a href="#LOCK对象" class="headerlink" title="LOCK对象"></a>LOCK对象</h1><p>与synchronized类似的，lock也能够达到同步的效果</p>
+<h2 id="使用Lock对象实现同步效果"><a href="#使用Lock对象实现同步效果" class="headerlink" title="使用Lock对象实现同步效果"></a>使用Lock对象实现同步效果</h2><p>Lock是一个接口，为了使用一个Lock对象，需要用到</p>
+<pre><code>Lock lock = new ReentrantLock();</code></pre><p>与 synchronized (someObject) 类似的，lock()方法，表示当前线程占用lock对象，一旦占用，其他线程就不能占用了。<br>与 synchronized 不同的是，一旦synchronized 块结束，就会自动释放对someObject的占用。 lock却必须调用unlock方法进行手动释放，为了保证释放的执行，往往会把unlock() 放在finally中进行。</p>
+<details><summary>lock.java</summary>
+    import java.text.SimpleDateFormat;  
+    import java.util.Date;  
+    import java.util.concurrent.locks.Lock;  
+    import java.util.concurrent.locks.ReentrantLock;  
+
+<p>public class lock {</p>
+<pre><code>public static String now() {
+    return new SimpleDateFormat(&quot;HH:mm:ss&quot;).format(new Date());
+}
+
+public static void log(String msg) {
+    System.out.printf(&quot;%s %s %s %n&quot;, now() , Thread.currentThread().getName() , msg);
+}
+
+public static void main(String[] args) {
+    Lock lock = new ReentrantLock();
+
+    Thread t1 = new Thread() {
+        public void run() {
+            try {
+                log(&quot;线程启动&quot;);
+                log(&quot;试图占有对象：lock&quot;);
+
+                lock.lock();
+
+                log(&quot;占有对象：lock&quot;);
+                log(&quot;进行5秒的业务操作&quot;);
+                Thread.sleep(5000);
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                log(&quot;释放对象：lock&quot;);
+                lock.unlock();
+            }
+            log(&quot;线程结束&quot;);
+        }
+    };
+    t1.setName(&quot;t1&quot;);
+    t1.start();
+    try {
+        //先让t1飞2秒
+        Thread.sleep(2000);
+    } catch (InterruptedException e1) {
+        // TODO Auto-generated catch block
+        e1.printStackTrace();
+    }
+    Thread t2 = new Thread() {
+
+        public void run() {
+            try {
+                log(&quot;线程启动&quot;);
+                log(&quot;试图占有对象：lock&quot;);
+
+                lock.lock();
+
+                log(&quot;占有对象：lock&quot;);
+                log(&quot;进行5秒的业务操作&quot;);
+                Thread.sleep(5000);
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                log(&quot;释放对象：lock&quot;);
+                lock.unlock();
+            }
+            log(&quot;线程结束&quot;);
+        }
+    };
+    t2.setName(&quot;t2&quot;);
+    t2.start();
+}</code></pre><p>}</p>
+</details>
+
+<h2 id="trylock方法"><a href="#trylock方法" class="headerlink" title="trylock方法"></a>trylock方法</h2><p>synchronized 是不占用到手不罢休的，会一直试图占用下去。<br>与 synchronized 的钻牛角尖不一样，Lock接口还提供了一个trylock方法。<br>trylock会在指定时间范围内试图占用，占成功了，就啪啪啪。 如果时间到了，还占用不成功，扭头就走~</p>
+<p>注意： 因为使用trylock有可能成功，有可能失败，所以后面unlock释放锁的时候，需要判断是否占用成功了，如果没占用成功也unlock,就会抛出异常</p>
+<details><summary>trylock.java</summary>
+
+<pre><code>import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+public class trylock {
+
+public static String now() {
+    return new SimpleDateFormat(&quot;HH:mm:ss&quot;).format(new Date());
+}
+
+public static void log(String msg) {
+    System.out.printf(&quot;%s %s %s %n&quot;, now() , Thread.currentThread().getName() , msg);
+}
+
+public static void main(String[] args) {
+    Lock lock = new ReentrantLock();
+
+    Thread t1 = new Thread() {
+        public void run() {
+            boolean locked = false;
+            try {
+                log(&quot;线程启动&quot;);
+                log(&quot;试图占有对象：lock&quot;);
+
+                locked = lock.tryLock(1,TimeUnit.SECONDS);
+                if(locked){
+                    log(&quot;占有对象：lock&quot;);
+                    log(&quot;进行5秒的业务操作&quot;);
+                    Thread.sleep(5000);
+                }
+                else{
+                    log(&quot;经过1秒钟的努力，还没有占有对象，放弃占有&quot;);
+                }
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+
+                if(locked){
+                    log(&quot;释放对象：lock&quot;);
+                    lock.unlock();
+                }
+            }
+            log(&quot;线程结束&quot;);
+        }
+    };
+    t1.setName(&quot;t1&quot;);
+    t1.start();
+    try {
+        //先让t1飞2秒
+        Thread.sleep(2000);
+    } catch (InterruptedException e1) {
+        // TODO Auto-generated catch block
+        e1.printStackTrace();
+    }
+    Thread t2 = new Thread() {
+
+        public void run() {
+            boolean locked = false;
+            try {
+                log(&quot;线程启动&quot;);
+                log(&quot;试图占有对象：lock&quot;);
+
+                locked = lock.tryLock(1,TimeUnit.SECONDS);
+                if(locked){
+                    log(&quot;占有对象：lock&quot;);
+                    log(&quot;进行5秒的业务操作&quot;);
+                    Thread.sleep(5000);
+                }
+                else{
+                    log(&quot;经过1秒钟的努力，还没有占有对象，放弃占有&quot;);
+                }
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+
+                if(locked){
+                    log(&quot;释放对象：lock&quot;);
+                    lock.unlock();
+                }
+            }
+            log(&quot;线程结束&quot;);
+        }
+    };
+    t2.setName(&quot;t2&quot;);
+    t2.start();
+}
+}</code></pre></details>
+
+<h2 id="线程交互"><a href="#线程交互" class="headerlink" title="线程交互"></a>线程交互</h2><p>使用synchronized方式进行线程交互，用到的是同步对象的wait,notify和notifyAll方法</p>
+<p>Lock也提供了类似的解决办法，首先通过lock对象得到一个Condition对象，然后分别调用这个Condition对象的：await, signal,signalAll 方法</p>
+<p>注意： 不是Condition对象的wait,nofity,notifyAll方法,是await,signal,signalAll</p>
+<details><summary>lockCondition.java</summary>
+
+<pre><code>import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+public class lockCondition{
+
+public static String now() {
+    return new SimpleDateFormat(&quot;HH:mm:ss&quot;).format(new Date());
+}
+
+public static void log(String msg) {
+    System.out.printf(&quot;%s %s %s %n&quot;, now() , Thread.currentThread().getName() , msg);
+}
+
+public static void main(String[] args) {
+    Lock lock = new ReentrantLock();
+    Condition condition = lock.newCondition();
+
+    Thread t1 = new Thread() {
+        public void run() {
+            try {
+                log(&quot;线程启动&quot;);
+                log(&quot;试图占有对象：lock&quot;);
+
+                lock.lock();
+
+                log(&quot;占有对象：lock&quot;);
+                log(&quot;进行5秒的业务操作&quot;);
+                Thread.sleep(5000);
+                log(&quot;临时释放对象 lock， 并等待&quot;);
+                condition.await();
+                log(&quot;重新占有对象 lock，并进行5秒的业务操作&quot;);
+                Thread.sleep(5000);
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                log(&quot;释放对象：lock&quot;);
+                lock.unlock();
+            }
+            log(&quot;线程结束&quot;);
+        }
+    };
+    t1.setName(&quot;t1&quot;);
+    t1.start();
+    try {
+        //先让t1飞2秒
+        Thread.sleep(2000);
+    } catch (InterruptedException e1) {
+        // TODO Auto-generated catch block
+        e1.printStackTrace();
+    }
+    Thread t2 = new Thread() {
+
+        public void run() {
+            try {
+                log(&quot;线程启动&quot;);
+                log(&quot;试图占有对象：lock&quot;);
+
+                lock.lock();
+
+                log(&quot;占有对象：lock&quot;);
+                log(&quot;进行5秒的业务操作&quot;);
+                Thread.sleep(5000);
+                log(&quot;唤醒等待中的线程&quot;);
+                condition.signal();
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                log(&quot;释放对象：lock&quot;);
+                lock.unlock();
+            }
+            log(&quot;线程结束&quot;);
+        }
+    };
+    t2.setName(&quot;t2&quot;);
+    t2.start();
+}</code></pre></details>
+
+<h2 id="Lock和synchronized的区别"><a href="#Lock和synchronized的区别" class="headerlink" title="Lock和synchronized的区别"></a>Lock和synchronized的区别</h2><ol>
+<li><p>Lock是一个接口，而synchronized是Java中的关键字，synchronized是内置的语言实现，Lock是代码层面的实现。</p>
+</li>
+<li><p>Lock可以选择性的获取锁，如果一段时间获取不到，可以放弃。synchronized不行，会一根筋一直获取下去。 借助Lock的这个特性，就能够规避死锁，synchronized必须通过谨慎和良好的设计，才能减少死锁的发生。</p>
+</li>
+<li><p>synchronized在发生异常和同步块结束的时候，会自动释放锁。而Lock必须手动释放， 所以如果忘记了释放锁，一样会造成死锁。</p>
+</li>
+</ol>
 </p>
-      <div class="post-button"><a class="btn" href="/2020/07/09/JAVA%E5%9F%BA%E7%A1%80%E6%8A%80%E6%9C%AF/" rel="noopener"><i class="fa fa-angle-double-right fa-fw"></i>阅读更多</a></div>
+      <div class="post-button"><a class="btn" href="/2020/07/09/JAVA-%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="noopener"><i class="fa fa-angle-double-right fa-fw"></i>阅读更多</a></div>
     </div>
   </div>
   <div class="lx-entry padding">
