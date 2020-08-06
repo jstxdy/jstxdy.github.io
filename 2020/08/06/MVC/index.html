@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="theme-color" content=#58b77a>
+  <title>JAVA后端学习规划 | North-Box</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="NorthBox">
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+  <script id="hexo-configurations">
+  var CONFIG = {
+    root: '/',
+    theme: 'lx',
+    version: '0.3.9',
+    localsearch:{
+      "enable": false,
+      "trigger": "auto",
+      "top_n_per_article": 1,
+      "unescape": false,
+      "preload": false
+      },
+    path: 'null'
+  };
+</script>
+
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/css/main.min.css">
+  <style type="text/css">
+    pre,
+    code {
+      font-family: 'Fira Code', monospace;
+    }
+    html {
+      font-family: sans-serif;
+    }
+    body {
+      font-family: sans-serif;
+    }
+    h1, h2, h3, h4, h5, figure {
+      font-family: sans-serif;
+    }
+    .menu-container{
+      font-family: sans-serif;
+    }
+  </style>
+
+  <script src="//cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/js/jquery.jside.menu.js"></script>
+	<script>
+	$(document).ready(function(){
+	$(".menu-container").jSideMenu({
+	    jSidePosition: "position-right",
+	    jSideSticky: true,
+	    jSideSkin: "greenish",
+	     });
+	}); 
+	</script>
+  
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Fira Code:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css">
+<meta name="generator" content="Hexo 4.2.1"></head>
+<body>
+<div class="single">
+
+<div id="page">
+<div id="lx-aside" style="background-image: url(//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/images/post_cover.jpeg)" data-stellar-background-ratio="0.5">
+  <div class="overlay">
+  <div class="page-title">
+    <div class="avatar"><a href="/"><img src="/images/avatar.jpeg"></a></div>
+    <span>2020-08-06</span>
+    <h2>JAVA后端学习规划</h2>
+    
+    </div>
+</div>
+</div>
+
+<div id="lx-main-content">
+  <div class="lx-post">
+    <div class="lx-entry padding">
+      <div>
+        <h1 id="Spring"><a href="#Spring" class="headerlink" title="Spring"></a>Spring</h1><h2 id="学习关键："><a href="#学习关键：" class="headerlink" title="学习关键："></a>学习关键：</h2><p>Spring 核心是 <font color='navyblue'>IoC 容器</font>，所以一定要透彻理解什么是控制反转（IoC）容器，以及如何配置及使用容器，其他所有技术都是基于容器实现的。<br>理解好 IoC 后，接下来是面向<font color='navyblue'>切面编程（AOP）</font>，首先还是明确概念，基本配置，最后是实现原理，接下来就是数据库事务管理。<br>其实 Spring 管理事务是通过面向切面编程实现的，所以基础很重要，IoC 容器和 AOP 学好，其余都是基于这两个核心东西的实现，</p>
+<h2 id="关键概念："><a href="#关键概念：" class="headerlink" title="关键概念："></a>关键概念：</h2><details>
+<summary>应用程序</summary>能完成我们所需要功能的成品，比如购物网站、OA 系统。
+</details>
+<details>
+<summary>框架</summary>能完成一定功能的半成品，比如我们可以使用框架进行购物网站开发。框架做一部分功能，我们自己做一部分功能，辅助高效工作。而且框架规定了你在开发应用程序时的整体架构，提供了一些基础功能，还规定了类和对象的如何创建、如何协作等，从而简化我们的代码编写，让我们专注于业务逻辑开发。
+</details>
+<details>
+<summary>非侵入式设计</summary>从框架角度可以这样理解，无需继承框架提供的类，这种设计就可以看作是非侵入式设计；如果继承了这些框架类，就是侵入设计。如果以后想更换框架，之前写过的代码几乎无法重用，如果非侵入式设计则之前写过的代码仍然可以继续使用。
+</details>
+<details>
+<summary>轻量级与重量级</summary>轻量级是相对于重量级而言的，轻量级一般就是非入侵性的、所依赖的东西非常少、资源占用非常少、部署简单等等，其实就是比较容易使用，而重量级正好相反。
+</details>
+<details>
+<summary>POJO</summary>Plain Ordinary Java Object，简单的 Java 对象。它可以包含业务逻辑或持久化逻辑，但不担当任何特殊角色且不继承或不实现任何其它 Java 框架的类或接口。
+</details>
+<details>
+<summary>容器</summary>在日常生活中容器就是一种盛放东西的器具，从程序设计角度看就是装对象的对象，因为存在放入、拿出等操作，所以容器还要管理对象的生命周期。
+</details>
+<details>
+<summary>控制反转</summary>即 Inversion of Control，缩写为 IoC，控制反转还有一个名字叫做依赖注入（Dependency Injection），就是由容器控制程序之间的关系，而非传统实现中，由程序代码直接操控。
+</details>
+<details>
+<summary>Bean</summary>一般指容器管理对象，在 Spring 中指 Spring IoC 容器管理对象.
+</details>
+
+<h2 id="Spring优点："><a href="#Spring优点：" class="headerlink" title="Spring优点："></a>Spring优点：</h2><p>Spring 能帮助我们简化应用程序开发，帮助我们创建和组装对象，为我们管理事务，简单的 MVC 框架，可以把 Spring 看作是一个超级粘合平台，能把很多技术整合在一起，形成一个整体，使系统结构更优良、性能更出众，从而加速我们程序开发。有如上优点，我们没有理由不考虑使用它。</p>
+<details>
+<summary>非常轻量级的容器</summary>以集中的、自动化的方式进行应用程序对象创建和装配，除此之外还会负责管理对象生命周期，能组合成复杂的应用程序。Spring 容器是非侵入式的（不需要依赖任何 Spring 特定类），而且完全采用 POJOs 进行开发，使应用程序更容易测试、更容易管理。而且核心 jar 包非常小，Spring 3.0.5 不到 1 M，而且不需要依赖任何应用服务器，可以部署在任何环境（Java SE 或 Java EE）。
+</details>
+<details>
+<summary>AOP</summary>AOP 是 Aspect Oriented Programming 的缩写，意思是面向切面编程。从另一个角度来考虑程序结构以完善面向对象编程（OOP），_即可以通过在编译期间、装载期间或运行期间实现在不修改源代码的情况下给程序动态添加功能的一种技术_。通俗点说就是把可重用的功能提取出来，然后将这些通用功能在合适的时候织入到应用程序中。比如安全，日志记录，这些都是通用的功能，我们可以把它们提取出来，然后在程序执行的合适地方植入这些代码并执行它们，从而完成需要的功能并复用了这些功能。
+</details>
+<details>
+<summary>简单的数据库事务管理</summary>在使用数据库的应用程序当中，自己管理数据库事务是一项很让人头疼的事，而且很容易出现错误，Spring 支持可插入的事务管理支持，而且无需 JavaEE 环境支持，通过 Spring 管理事务可以把我们从事务管理中解放出来来专注业务逻辑。
+</details>
+<details>
+<summary>JDBC 抽象及 ORM（对象关系映射）框架支持</summary>Spring 使 JDBC 更加容易使用。提供 DAO（数据访问对象）支持，非常方便集成第三方 ORM 框架，比如 Hibernate 等。并且完全支持 Spring 事务和使用 Spring 提供的一致的异常体系。
+</details>
+<details>
+<summary>灵活的 Web 层支持</summary>Spring 本身提供一套非常强大的 MVC 框架，而且可以非常容易的与第三方 MVC 框架集成，比如 Struts 等。
+</details>
+<details>
+<summary>简化各种技术集成</summary>提供对 Java Mail、任务调度、JMX、JMS、JNDI、EJB、动态语言、远程访问、Web Service 等的集成。
+</details>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="lx-navigation">
+	<div class="lx-cover prev lx-cover-sm" style="background-image: url(//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/images/footer-l.jpeg)">
+		<div class="overlay"></div>
+		<a class="copy" href="#">
+			<div class="display-t">
+				<div class="display-tc">
+					<div>
+						<span>Next</span>
+						<h3>没有更新的文章</h3>
+					</div>
+				</div>
+			</div>
+		</a>
+	</div>
+        <div class="lx-cover next lx-cover-sm" style="background-image: url(//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/images/footer-r.jpeg)">
+		<div class="overlay"></div>
+		<a class="copy" href="/2020/07/31/JSP/">
+			<div class="display-t">
+				<div class="display-tc">
+					<div>
+						<span>Prev</span>
+						<h3>JSP</h3>
+					</div>
+				</div>
+			</div>
+		</a>
+	</div>
+</div>
+
+</div>
+
+<footer>
+  <div>
+  Copyright &copy; 2019.<a href="/">North-Box</a><br>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme <a href="https://lx.js.org" target="_blank">Lx</a><br>
+  </div>
+</footer>
+
+</div>
+
+<button class="hamburger hamburger--arrow-r" type="button">
+    <div class="hamburger-box">
+      <div class="hamburger-inner"></div>
+    </div>
+</button> 
+<div class="menu visibility">
+  <div class="menu-head">
+    <span class="layer">
+      <div class="col">
+        <div class="row for-pic">
+          <div class="profile-pic">
+            <a href="/"><img src="/images/avatar.jpeg" alt="NorthBox"/></a>
+          </div>
+        </div>
+        <div class="row for-name">
+          <p>NorthBox</p>
+          <span class="tagline">Hello, World!</span>
+        </div>
+      </div>
+    </span>
+  </div>
+  <nav class="menu-container">
+  <ul class="menu-items">
+    <li><a href="/"><i class="fa fa-home fa-fw"></i>首页</a></li>
+    <li><a href="/archives/"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+    
+    <li class="has-sub"><span class="dropdown-heading">
+      <i class="fa fa-bookmark fa-fw"></i>页面</span>
+        <ul>
+          <li><a href="/guestbook/">Guestbook</a></li>
+        <li><a href="/about/">About</a></li>
+        </ul>
+    </li>
+    <li class="has-sub"><span class="dropdown-heading">
+      <i class="fa fa-link fa-fw"></i>友链</span>
+        <ul>
+          <li> <a href="https://lx.js.org" target="_blank">Theme-Lx</a></li>
+        </ul>
+    </li>
+  </ul>
+  </nav>
+</div>
+
+<div class="gototop js-top">
+  <a href="#" class="js-gotop"><i class="fa fa-arrow-up"></i></a>
+</div>
+<script src="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/js/jquery.easing.min.js"></script>
+<script>
+(function () {
+	"use strict";
+	var goToTop = function() {
+		$(".js-gotop").on("click", function(event){
+			event.preventDefault();
+			$("html, body").animate({
+				scrollTop: $("html").offset().top
+			}, 500, "easeInOutExpo");
+			return false;
+		});
+		$(window).scroll(function(){
+			var $win = $(window);
+			if ($win.scrollTop() > 200) {
+				$(".js-top").addClass("active");
+			} else {
+				$(".js-top").removeClass("active");
+			}
+		});
+	};
+	$(function(){
+		goToTop();
+	});
+}());
+</script>
+
+
+</body>
+</html>
